@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import { Link, useLocation, Navigate } from "react-router-dom";
 import { formatPrice } from "../utils/formatPrice";
 
@@ -68,52 +69,71 @@ export default function OrderConfirmation() {
         </Link>
       </div>
 
-      {showPayment && (
-        <div
-          className="fixed inset-0 flex items-center justify-center p-4 bg-black/80"
-          style={{ zIndex: 9999 }}
-        >
-          <div className="bg-[#080f1e] border border-[#0d1a33] rounded-2xl w-full max-w-sm p-6">
-            <h3 className="text-white text-lg font-bold mb-1 text-center">
-              입금 안내
-            </h3>
-            <p className="text-gray-400 text-sm text-center mb-5">
-              주문 후 아래 계좌로 입금해 주세요
-            </p>
-
-            <div className="bg-black rounded-xl p-3 mb-5 text-center">
-              <p className="text-blue-400 font-bold text-base">{BANK_ACCOUNT}</p>
-            </div>
-
-            <div className="space-y-2 mb-4">
-              {items.map((item, i) => (
-                <div key={i} className="flex justify-between text-sm">
-                  <span className="text-gray-300">
-                    {item.name} × {item.quantity}
-                  </span>
-                  <span className="text-gray-300">
-                    {formatPrice(item.price * item.quantity)}
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            <div className="flex justify-between pt-3 border-t border-[#0d1a33] mb-6">
-              <span className="text-white font-bold">총 입금액</span>
-              <span className="text-blue-400 font-bold text-lg">
-                {formatPrice(state.totalPrice)}
-              </span>
-            </div>
-
-            <button
-              onClick={() => setShowPayment(false)}
-              className="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-3 rounded-xl transition-colors"
+      {showPayment &&
+        createPortal(
+          <div
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              zIndex: 9999,
+              backgroundColor: "rgba(0, 0, 0, 0.8)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "1rem",
+            }}
+            onClick={() => setShowPayment(false)}
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="bg-[#080f1e] border border-[#0d1a33] rounded-2xl w-full max-w-sm p-6"
             >
-              확인
-            </button>
-          </div>
-        </div>
-      )}
+              <h3 className="text-white text-lg font-bold mb-1 text-center">
+                입금 안내
+              </h3>
+              <p className="text-gray-400 text-sm text-center mb-5">
+                주문 후 아래 계좌로 입금해 주세요
+              </p>
+
+              <div className="bg-black rounded-xl p-3 mb-5 text-center">
+                <p className="text-blue-400 font-bold text-base">
+                  {BANK_ACCOUNT}
+                </p>
+              </div>
+
+              <div className="space-y-2 mb-4">
+                {items.map((item, i) => (
+                  <div key={i} className="flex justify-between text-sm">
+                    <span className="text-gray-300">
+                      {item.name} × {item.quantity}
+                    </span>
+                    <span className="text-gray-300">
+                      {formatPrice(item.price * item.quantity)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex justify-between pt-3 border-t border-[#0d1a33] mb-6">
+                <span className="text-white font-bold">총 입금액</span>
+                <span className="text-blue-400 font-bold text-lg">
+                  {formatPrice(state.totalPrice)}
+                </span>
+              </div>
+
+              <button
+                onClick={() => setShowPayment(false)}
+                className="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-3 rounded-xl transition-colors"
+              >
+                확인
+              </button>
+            </div>
+          </div>,
+          document.body
+        )}
     </>
   );
 }
