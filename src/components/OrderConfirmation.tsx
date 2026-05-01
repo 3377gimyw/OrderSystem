@@ -1,12 +1,24 @@
+import { useState } from "react";
 import { Link, useLocation, Navigate } from "react-router-dom";
 import { formatPrice } from "../utils/formatPrice";
+
+const BANK_ACCOUNT = "국민은행 000-0000-0000-00 홍길동";
+
+interface OrderedItem {
+  name: string;
+  quantity: number;
+  price: number;
+}
 
 export default function OrderConfirmation() {
   const location = useLocation();
   const state = location.state as {
     tableNumber: number;
     totalPrice: number;
+    items: OrderedItem[];
   } | null;
+
+  const [showPayment, setShowPayment] = useState(true);
 
   if (!state) {
     return <Navigate to="/" replace />;
@@ -34,18 +46,67 @@ export default function OrderConfirmation() {
         주문이 완료되었습니다!
       </h2>
       <p className="text-gray-400 mb-1">
-        테이블 <span className="text-white font-bold">{state.tableNumber}</span>
-        번
+        테이블 <span className="text-white font-bold">{state.tableNumber}</span>번
       </p>
       <p className="text-blue-400 font-bold text-lg mb-8">
         {formatPrice(state.totalPrice)}
       </p>
+      <button
+        onClick={() => setShowPayment(true)}
+        className="text-blue-400 text-sm underline mb-6"
+      >
+        입금 정보 다시 보기
+      </button>
       <Link
         to="/"
         className="bg-blue-900 hover:bg-blue-800 text-white font-medium px-6 py-3 rounded-xl transition-colors"
       >
         추가 주문하기
       </Link>
+
+      {showPayment && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80">
+          <div className="bg-[#080f1e] border border-[#0d1a33] rounded-2xl w-full max-w-sm p-6">
+            <h3 className="text-white text-lg font-bold mb-1 text-center">
+              입금 안내
+            </h3>
+            <p className="text-gray-400 text-sm text-center mb-5">
+              주문 후 아래 계좌로 입금해 주세요
+            </p>
+
+            <div className="bg-black rounded-xl p-3 mb-5 text-center">
+              <p className="text-blue-400 font-bold text-base">{BANK_ACCOUNT}</p>
+            </div>
+
+            <div className="space-y-2 mb-4">
+              {state.items.map((item, i) => (
+                <div key={i} className="flex justify-between text-sm">
+                  <span className="text-gray-300">
+                    {item.name} × {item.quantity}
+                  </span>
+                  <span className="text-gray-300">
+                    {formatPrice(item.price * item.quantity)}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex justify-between pt-3 border-t border-[#0d1a33] mb-6">
+              <span className="text-white font-bold">총 입금액</span>
+              <span className="text-blue-400 font-bold text-lg">
+                {formatPrice(state.totalPrice)}
+              </span>
+            </div>
+
+            <button
+              onClick={() => setShowPayment(false)}
+              className="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-3 rounded-xl transition-colors"
+            >
+              확인
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

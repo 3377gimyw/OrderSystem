@@ -40,9 +40,14 @@ export default function OrderForm() {
         timestamp: new Date().toISOString(),
       });
 
+      const orderedItems = items.map((item) => ({
+        name: item.menuItem.name,
+        quantity: item.quantity,
+        price: item.menuItem.price,
+      }));
       clearCart();
       navigate("/confirmation", {
-        state: { tableNumber: num, totalPrice },
+        state: { tableNumber: num, totalPrice, items: orderedItems },
       });
     } catch {
       setSubmitError("주문 전송에 실패했습니다. 다시 시도해주세요.");
