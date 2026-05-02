@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { submitOrder } from "../utils/submitOrder";
@@ -11,8 +11,9 @@ export default function OrderForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [submitError, setSubmitError] = useState("");
+  const submittedRef = useRef(false);
 
-  if (items.length === 0) {
+  if (items.length === 0 && !submittedRef.current) {
     return <Navigate to="/" replace />;
   }
 
@@ -45,6 +46,7 @@ export default function OrderForm() {
         quantity: item.quantity,
         price: item.menuItem.price,
       }));
+      submittedRef.current = true;
       navigate("/confirmation", {
         replace: true,
         state: { tableNumber: num, totalPrice, items: orderedItems },
