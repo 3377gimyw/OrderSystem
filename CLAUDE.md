@@ -84,8 +84,8 @@ interface MenuItem {
   soldOut?: boolean;     // If true, show as sold out and disable ordering
 }
 
-type MenuCategory = "주류" | "안주" | "식사" | "음료";
-// (Alcohol | Side dishes/Snacks | Meals | Non-alcoholic drinks)
+type MenuCategory = "안주" | "식사";
+// (Side dishes/Snacks | Meals)
 ```
 
 ### Cart Item
@@ -114,30 +114,26 @@ interface Order {
 
 ### How It Works
 
-1. Create a Google Sheet with columns: `Timestamp | Table | Item | Qty | Price | Total | Status`
+1. Create a Google Sheet with header row: `Timestamp | 테이블 | 감자튀김 | 치킨너겟 | 모듬소시지 | 골뱅이무침 | 라면 | 볶음밥 | 총액 | 상태`
 2. Write a Google Apps Script (Code.gs) that:
    - Listens for POST requests via `doPost(e)`
    - Parses the JSON order data
-   - Appends one row per order item to the sheet
+   - Appends ONE row per order, with quantities filling the menu columns
    - Returns success/error JSON response
 3. Deploy the script as a Web App (access: "Anyone")
 4. Store the Web App URL in `.env` as `VITE_GOOGLE_SCRIPT_URL`
 
 ### Google Apps Script (Code.gs)
 
-The script should:
-- Parse incoming JSON from `e.postData.contents`
-- For each item in the order, append a row: `[timestamp, tableNumber, itemName, quantity, itemPrice, totalPrice, "신규"]`
-- Return `{ "result": "success" }` as JSON
-- Handle CORS with `doGet()` returning empty response for preflight
+The script holds the menu column order in a hardcoded `MENU_NAMES` array. To add or remove a menu item, edit both `src/data/menu.ts` and `MENU_NAMES` in `Code.gs`, then add/remove the matching column on the sheet.
 
 ### Google Sheet Column Layout
 
-| Timestamp | 테이블 | 메뉴 | 수량 | 단가 | 총액 | 상태 |
-|-----------|--------|------|------|------|------|------|
-| 2026-05-01 20:30 | 5 | 감자튀김 | 2 | 15000 | 30000 | 신규 |
+| Timestamp | 테이블 | 감자튀김 | 치킨너겟 | 모듬소시지 | 골뱅이무침 | 라면 | 볶음밥 | 총액 | 상태 |
+|-----------|--------|----------|----------|------------|------------|------|--------|------|------|
+| 2026-05-02 21:30 | 5 | 2 |  | 1 |  |  | 1 | 47000 | 신규 |
 
-Staff changes "상태" (status) column manually: 신규 → 준비중 → 완료
+Empty cells mean the item was not ordered. Staff changes "상태" (status) column manually: 신규 → 준비중 → 완료
 (New → Preparing → Done)
 
 ---
@@ -177,29 +173,15 @@ Use placeholder data initially. The menu should be easy to update by editing `sr
 
 ### Sample Categories and Items
 
-**주류 (Alcohol)**
-- 카스 생맥주 500ml — 5,000원
-- 테라 생맥주 500ml — 5,000원
-- 참이슬 소주 — 5,000원
-- 처음처럼 소주 — 5,000원
-- 카스 병맥주 — 4,000원
-
 **안주 (Snacks/Side Dishes)**
 - 감자튀김 — 12,000원
 - 치킨너겟 — 13,000원
 - 모듬소시지 — 15,000원
 - 골뱅이무침 — 18,000원
-- 오징어튀김 — 14,000원
 
 **식사 (Meals)**
 - 라면 — 5,000원
 - 볶음밥 — 8,000원
-- 떡볶이 — 10,000원
-
-**음료 (Non-Alcoholic)**
-- 콜라 — 2,000원
-- 사이다 — 2,000원
-- 물 — 1,000원
 
 ---
 

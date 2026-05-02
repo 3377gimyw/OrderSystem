@@ -1,29 +1,16 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
-import type { MenuCategory } from "../types";
 import { menuItems } from "../data/menu";
 import { useCart } from "../context/CartContext";
 import { formatPrice } from "../utils/formatPrice";
-import CategoryTabs from "./CategoryTabs";
 import MenuItemCard from "./MenuItemCard";
 
 export default function MenuPage() {
-  const [selectedCategory, setSelectedCategory] =
-    useState<MenuCategory | null>(null);
   const { totalItems, totalPrice } = useCart();
 
-  const filteredItems = selectedCategory
-    ? menuItems.filter((item) => item.category === selectedCategory)
-    : menuItems;
-
   return (
-    <div className="pb-24">
-      <CategoryTabs
-        selected={selectedCategory}
-        onSelect={setSelectedCategory}
-      />
+    <div className="pb-24 pt-3">
       <div className="grid grid-cols-1 gap-3 px-4">
-        {filteredItems.map((item) => (
+        {menuItems.map((item) => (
           <MenuItemCard key={item.id} item={item} />
         ))}
       </div>
