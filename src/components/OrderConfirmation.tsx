@@ -30,24 +30,6 @@ export default function OrderConfirmation() {
   return (
     <>
       <div className="flex flex-col items-center justify-center min-h-[60vh] px-4 text-center">
-        <div className="bg-green-900/30 border border-green-800 rounded-full w-16 h-16 flex items-center justify-center mb-6">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-8 w-8 text-green-400"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
-          >
-            <path
-              className="checkmark-path"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              pathLength={100}
-              d="M5 13l4 4L19 7"
-            />
-          </svg>
-        </div>
         <h2 className="text-white text-2xl font-bold mb-2">
           주문이 완료되었습니다!
         </h2>
@@ -93,6 +75,26 @@ export default function OrderConfirmation() {
               onClick={(e) => e.stopPropagation()}
               className="bg-[#080f1e] border border-[#0d1a33] rounded-2xl w-full max-w-sm p-6"
             >
+              <div className="flex justify-center mb-4">
+                <div className="bg-green-900/30 border border-green-800 rounded-full w-16 h-16 flex items-center justify-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-8 w-8 text-green-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      className="checkmark-path"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      pathLength={100}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
+              </div>
               <h3 className="text-white text-lg font-bold mb-1 text-center">
                 입금 안내
               </h3>
