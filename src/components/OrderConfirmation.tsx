@@ -40,8 +40,10 @@ export default function OrderConfirmation() {
             strokeWidth={2}
           >
             <path
+              className="checkmark-path"
               strokeLinecap="round"
               strokeLinejoin="round"
+              pathLength={100}
               d="M5 13l4 4L19 7"
             />
           </svg>
