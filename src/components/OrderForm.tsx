@@ -45,10 +45,11 @@ export default function OrderForm() {
         quantity: item.quantity,
         price: item.menuItem.price,
       }));
-      clearCart();
       navigate("/confirmation", {
+        replace: true,
         state: { tableNumber: num, totalPrice, items: orderedItems },
       });
+      clearCart();
     } catch {
       setSubmitError("주문 전송에 실패했습니다. 다시 시도해주세요.");
     } finally {
