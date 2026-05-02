@@ -13,7 +13,7 @@ export default function Header() {
         <Link to="/cart" className="relative p-2" aria-label="장바구니">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-7 w-7 text-blue-400"
+            className="h-9 w-9 text-blue-400"
             viewBox="0 0 1080 1080"
             fill="currentColor"
           >
