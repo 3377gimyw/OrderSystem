@@ -4,8 +4,10 @@ import MenuPage from "./components/MenuPage";
 import Cart from "./components/Cart";
 import OrderForm from "./components/OrderForm";
 import OrderConfirmation from "./components/OrderConfirmation";
+import { useTablePrefill } from "./hooks/useTablePrefill";
 
 export default function App() {
+  useTablePrefill();
   return (
     <div className="min-h-screen bg-black text-gray-100">
       <Header />

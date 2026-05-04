@@ -23,3 +23,11 @@ export interface Order {
   totalPrice: number;
   timestamp: string;
 }
+
+export interface OrderHistoryEntry {
+  orderId: string;
+  timestamp: string;
+  items: { name: string; quantity: number }[];
+  totalPrice: number;
+  status: string;
+}

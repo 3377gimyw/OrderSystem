@@ -5,9 +5,18 @@ import { submitOrder } from "../utils/submitOrder";
 import { formatPrice } from "../utils/formatPrice";
 
 export default function OrderForm() {
-  const { items, totalPrice, clearCart, orderId } = useCart();
+  const {
+    items,
+    totalPrice,
+    clearCart,
+    orderId,
+    tableNumber: storedTableNumber,
+    setTableNumber: setStoredTableNumber,
+  } = useCart();
   const navigate = useNavigate();
-  const [tableNumber, setTableNumber] = useState("");
+  const [tableNumber, setTableNumber] = useState(
+    storedTableNumber != null ? String(storedTableNumber) : ""
+  );
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -28,6 +37,7 @@ export default function OrderForm() {
       return;
     }
 
+    setStoredTableNumber(num);
     setLoading(true);
     try {
       await submitOrder({
