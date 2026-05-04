@@ -3,7 +3,9 @@ import { createPortal } from "react-dom";
 import { Link, useLocation, Navigate } from "react-router-dom";
 import { formatPrice } from "../utils/formatPrice";
 
-const BANK_ACCOUNT = "국민은행 000-0000-0000-00 홍길동";
+const BANK_NAME = "국민은행";
+const BANK_ACCOUNT_NUMBER = "000-0000-0000-00";
+const BANK_HOLDER = "홍길동";
 
 interface OrderedItem {
   name: string;
@@ -20,6 +22,18 @@ export default function OrderConfirmation() {
   } | null;
 
   const [showPayment, setShowPayment] = useState(true);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyAccount = async () => {
+    const digitsOnly = BANK_ACCOUNT_NUMBER.replace(/-/g, "");
+    try {
+      await navigator.clipboard.writeText(digitsOnly);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setCopied(false);
+    }
+  };
 
   if (!state) {
     return <Navigate to="/" replace />;
@@ -102,10 +116,21 @@ export default function OrderConfirmation() {
                 주문 후 아래 계좌로 입금해 주세요
               </p>
 
-              <div className="bg-black rounded-xl p-3 mb-5 text-center">
-                <p className="text-blue-400 font-bold text-base">
-                  {BANK_ACCOUNT}
+              <div className="bg-black rounded-xl p-3 mb-5">
+                <p className="text-gray-400 text-xs text-center mb-1">
+                  {BANK_NAME} · {BANK_HOLDER}
                 </p>
+                <div className="flex items-center justify-center gap-2">
+                  <p className="text-blue-400 font-bold text-base">
+                    {BANK_ACCOUNT_NUMBER}
+                  </p>
+                  <button
+                    onClick={handleCopyAccount}
+                    className="bg-blue-900 hover:bg-blue-800 active:scale-95 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-all"
+                  >
+                    {copied ? "복사됨" : "복사"}
+                  </button>
+                </div>
               </div>
 
               <div className="space-y-2 mb-4">
