@@ -5,7 +5,7 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-black/95 backdrop-blur border-b border-[#0d1a33]">
       <div className="flex items-center justify-between px-4 h-14">
         <Link to="/" className="text-lg font-bold text-white">
-          주문 내역
+          주점 이름
         </Link>
         <Link
           to="/history"
