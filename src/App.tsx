@@ -4,6 +4,7 @@ import MenuPage from "./components/MenuPage";
 import Cart from "./components/Cart";
 import OrderForm from "./components/OrderForm";
 import OrderConfirmation from "./components/OrderConfirmation";
+import OrderHistoryPage from "./components/OrderHistoryPage";
 import { useTablePrefill } from "./hooks/useTablePrefill";
 
 export default function App() {
@@ -17,6 +18,7 @@ export default function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/order" element={<OrderForm />} />
           <Route path="/confirmation" element={<OrderConfirmation />} />
+          <Route path="/history" element={<OrderHistoryPage />} />
         </Routes>
       </main>
     </div>

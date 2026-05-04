@@ -1,14 +1,11 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { menuItems } from "../data/menu";
 import { useCart } from "../context/CartContext";
 import { formatPrice } from "../utils/formatPrice";
 import MenuItemCard from "./MenuItemCard";
-import OrderHistory from "./OrderHistory";
 
 export default function MenuPage() {
   const { totalItems, totalPrice, tableNumber } = useCart();
-  const [showHistory, setShowHistory] = useState(false);
 
   const showStickyBar = totalItems > 0 || tableNumber != null;
 
@@ -32,33 +29,26 @@ export default function MenuPage() {
                 <span>{formatPrice(totalPrice)}</span>
               </Link>
               {tableNumber != null && (
-                <button
-                  onClick={() => setShowHistory(true)}
-                  className="bg-[#0d1a33] hover:bg-[#15264d] text-blue-300 font-medium px-4 rounded-xl transition-colors"
+                <Link
+                  to="/history"
+                  className="flex items-center bg-[#0d1a33] hover:bg-[#15264d] text-blue-300 font-medium px-4 rounded-xl transition-colors"
                   aria-label="주문 내역"
                 >
                   내역
-                </button>
+                </Link>
               )}
             </div>
           ) : (
             tableNumber != null && (
-              <button
-                onClick={() => setShowHistory(true)}
-                className="w-full bg-[#0d1a33] hover:bg-[#15264d] text-blue-300 font-medium py-3 px-6 rounded-xl transition-colors"
+              <Link
+                to="/history"
+                className="block w-full text-center bg-[#0d1a33] hover:bg-[#15264d] text-blue-300 font-medium py-3 px-6 rounded-xl transition-colors"
               >
                 테이블 {tableNumber}번 · 주문 내역 보기
-              </button>
+              </Link>
             )
           )}
         </div>
-      )}
-
-      {showHistory && tableNumber != null && (
-        <OrderHistory
-          tableNumber={tableNumber}
-          onClose={() => setShowHistory(false)}
-        />
       )}
     </div>
   );
