@@ -10,12 +10,21 @@ interface CartContextType {
   clearCart: () => void;
   totalItems: number;
   totalPrice: number;
+  orderId: string;
 }
 
 const CartContext = createContext<CartContextType | null>(null);
 
+function newOrderId() {
+  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
+    return crypto.randomUUID();
+  }
+  return `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+}
+
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
+  const [orderId, setOrderId] = useState<string>(() => newOrderId());
 
   const addItem = (menuItem: MenuItem) => {
     setItems((prev) => {
@@ -47,7 +56,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
     );
   };
 
-  const clearCart = () => setItems([]);
+  const clearCart = () => {
+    setItems([]);
+    setOrderId(newOrderId());
+  };
 
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = items.reduce(
@@ -65,6 +77,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         clearCart,
         totalItems,
         totalPrice,
+        orderId,
       }}
     >
       {children}

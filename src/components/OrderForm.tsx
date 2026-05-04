@@ -5,7 +5,7 @@ import { submitOrder } from "../utils/submitOrder";
 import { formatPrice } from "../utils/formatPrice";
 
 export default function OrderForm() {
-  const { items, totalPrice, clearCart } = useCart();
+  const { items, totalPrice, clearCart, orderId } = useCart();
   const navigate = useNavigate();
   const [tableNumber, setTableNumber] = useState("");
   const [error, setError] = useState("");
@@ -31,6 +31,7 @@ export default function OrderForm() {
     setLoading(true);
     try {
       await submitOrder({
+        orderId,
         tableNumber: num,
         items: items.map((item) => ({
           name: item.menuItem.name,

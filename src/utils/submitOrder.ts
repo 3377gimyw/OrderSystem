@@ -7,7 +7,7 @@ export async function submitOrder(order: Order): Promise<{ result: string }> {
     throw new Error("Google Apps Script URL이 설정되지 않았습니다.");
   }
 
-  await fetch(GOOGLE_SCRIPT_URL, {
+  const res = await fetch(GOOGLE_SCRIPT_URL, {
     method: "POST",
     headers: {
       "Content-Type": "text/plain",
@@ -15,5 +15,14 @@ export async function submitOrder(order: Order): Promise<{ result: string }> {
     body: JSON.stringify(order),
   });
 
-  return { result: "success" };
+  if (!res.ok) {
+    throw new Error(`주문 전송 실패 (HTTP ${res.status})`);
+  }
+
+  const json = (await res.json()) as { result: string; message?: string };
+  if (json.result !== "success") {
+    throw new Error(json.message ?? "주문 전송 실패");
+  }
+
+  return json;
 }
