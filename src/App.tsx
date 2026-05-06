@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Header from "./components/Header";
 import MenuPage from "./components/MenuPage";
 import Cart from "./components/Cart";
@@ -10,9 +10,12 @@ import { useTablePrefill } from "./hooks/useTablePrefill";
 
 export default function App() {
   useTablePrefill();
+  const location = useLocation();
+  const showHeader = location.pathname !== "/";
+
   return (
-    <div className="min-h-screen bg-black text-gray-100">
-      <Header />
+    <div className="min-h-dvh">
+      {showHeader && <Header />}
       <main>
         <Routes>
           <Route path="/" element={<MenuPage />} />
