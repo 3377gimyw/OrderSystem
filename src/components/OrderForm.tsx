@@ -1,23 +1,12 @@
 import { useRef, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { submitOrder } from "../utils/submitOrder";
 import { formatPrice } from "../utils/formatPrice";
 
 export default function OrderForm() {
-  const {
-    items,
-    totalPrice,
-    clearCart,
-    orderId,
-    tableNumber: storedTableNumber,
-    setTableNumber: setStoredTableNumber,
-  } = useCart();
+  const { items, totalPrice, clearCart, orderId, tableNumber } = useCart();
   const navigate = useNavigate();
-  const [tableNumber, setTableNumber] = useState(
-    storedTableNumber != null ? String(storedTableNumber) : ""
-  );
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const submittedRef = useRef(false);
@@ -26,23 +15,33 @@ export default function OrderForm() {
     return <Navigate to="/" replace />;
   }
 
+  if (tableNumber == null) {
+    return (
+      <div className="px-4 py-12 text-center">
+        <p className="text-gray-300 text-sm mb-2">
+          테이블 번호가 확인되지 않았습니다.
+        </p>
+        <p className="text-gray-500 text-xs mb-6">
+          테이블의 QR 코드를 다시 스캔해 주세요.
+        </p>
+        <Link
+          to="/"
+          className="inline-block bg-blue-900 hover:bg-blue-800 text-white font-medium py-2 px-5 rounded-xl transition-colors"
+        >
+          메뉴로 돌아가기
+        </Link>
+      </div>
+    );
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
     setSubmitError("");
-
-    const num = parseInt(tableNumber, 10);
-    if (isNaN(num) || num < 1 || num > 30) {
-      setError("테이블 번호는 1~30 사이의 숫자를 입력해주세요.");
-      return;
-    }
-
-    setStoredTableNumber(num);
     setLoading(true);
     try {
       await submitOrder({
         orderId,
-        tableNumber: num,
+        tableNumber,
         items: items.map((item) => ({
           name: item.menuItem.name,
           quantity: item.quantity,
@@ -60,7 +59,7 @@ export default function OrderForm() {
       submittedRef.current = true;
       navigate("/confirmation", {
         replace: true,
-        state: { tableNumber: num, totalPrice, items: orderedItems },
+        state: { tableNumber, totalPrice, items: orderedItems },
       });
       clearCart();
     } catch {
@@ -75,6 +74,10 @@ export default function OrderForm() {
       <h2 className="text-white text-xl font-bold mb-6">주문 확인</h2>
 
       <div className="bg-[#080f1e] rounded-xl p-4 mb-6">
+        <div className="flex justify-between pb-3 mb-2 border-b border-[#0d1a33]">
+          <span className="text-gray-400 text-sm">테이블</span>
+          <span className="text-white font-bold">{tableNumber}번</span>
+        </div>
         {items.map((item) => (
           <div
             key={item.menuItem.id}
@@ -97,26 +100,8 @@ export default function OrderForm() {
       </div>
 
       <form onSubmit={handleSubmit}>
-        <label
-          htmlFor="tableNumber"
-          className="block text-white font-medium mb-2"
-        >
-          테이블 번호
-        </label>
-        <input
-          id="tableNumber"
-          type="number"
-          min="1"
-          max="30"
-          value={tableNumber}
-          onChange={(e) => setTableNumber(e.target.value)}
-          placeholder="1~30"
-          className="w-full bg-[#080f1e] border border-[#0d1a33] text-white rounded-xl px-4 py-3 text-lg focus:outline-none focus:border-blue-700 transition-colors"
-        />
-        {error && <p className="text-red-400 text-sm mt-2">{error}</p>}
-
         {submitError && (
-          <div className="bg-red-900/30 border border-red-800 text-red-400 rounded-xl p-3 mt-4 text-sm">
+          <div className="bg-red-900/30 border border-red-800 text-red-400 rounded-xl p-3 mb-4 text-sm">
             {submitError}
           </div>
         )}
@@ -124,7 +109,7 @@ export default function OrderForm() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full mt-6 bg-blue-900 hover:bg-blue-800 disabled:bg-[#080f1e] disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-xl transition-colors"
+          className="w-full bg-blue-900 hover:bg-blue-800 disabled:bg-[#080f1e] disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-xl transition-colors"
         >
           {loading ? (
             <span className="flex items-center justify-center gap-2">

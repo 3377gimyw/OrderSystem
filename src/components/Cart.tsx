@@ -4,7 +4,7 @@ import { formatPrice } from "../utils/formatPrice";
 import CartItemComponent from "./CartItem";
 
 export default function Cart() {
-  const { items, totalPrice } = useCart();
+  const { items, totalPrice, tableNumber } = useCart();
   const navigate = useNavigate();
 
   if (items.length === 0) {
@@ -37,9 +37,15 @@ export default function Cart() {
       </div>
 
       <div className="fixed bottom-0 left-0 right-0 p-4 bg-black/95 backdrop-blur border-t border-[#0d1a33]">
+        {tableNumber == null && (
+          <p className="text-amber-400 text-xs text-center mb-2">
+            테이블의 QR 코드를 다시 스캔해 주세요.
+          </p>
+        )}
         <button
           onClick={() => navigate("/order")}
-          className="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-3 px-6 rounded-xl transition-colors"
+          disabled={tableNumber == null}
+          className="w-full bg-blue-900 hover:bg-blue-800 disabled:bg-[#080f1e] disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-xl transition-colors"
         >
           주문하기
         </button>

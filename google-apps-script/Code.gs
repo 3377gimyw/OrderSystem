@@ -7,6 +7,12 @@ var MENU_NAMES = [
   "볶음밥",
 ];
 
+var STAFF_SECRET = "CHANGE_ME";
+
+function resetKey(table) {
+  return "reset." + table;
+}
+
 function doPost(e) {
   var lock = LockService.getScriptLock();
   try {
@@ -18,8 +24,13 @@ function doPost(e) {
   }
 
   try {
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
     var data = JSON.parse(e.postData.contents);
+
+    if (data.action === "reset") {
+      return handleReset(data);
+    }
+
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
     var timestamp = new Date().toLocaleString("ko-KR", { timeZone: "Asia/Seoul" });
 
     // OrderID column is the last column: timestamp, table, ...menu, total, status, orderId
@@ -63,6 +74,32 @@ function doPost(e) {
   }
 }
 
+function handleReset(data) {
+  if (data.secret !== STAFF_SECRET) {
+    return ContentService.createTextOutput(
+      JSON.stringify({ result: "error", message: "인증 실패" })
+    ).setMimeType(ContentService.MimeType.JSON);
+  }
+
+  var table = parseInt(data.table, 10);
+  if (isNaN(table) || table < 1 || table > 30) {
+    return ContentService.createTextOutput(
+      JSON.stringify({ result: "error", message: "invalid table" })
+    ).setMimeType(ContentService.MimeType.JSON);
+  }
+
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var lastRow = sheet.getLastRow();
+  PropertiesService.getScriptProperties().setProperty(
+    resetKey(table),
+    String(lastRow)
+  );
+
+  return ContentService.createTextOutput(
+    JSON.stringify({ result: "success", resetAtRow: lastRow })
+  ).setMimeType(ContentService.MimeType.JSON);
+}
+
 function doGet(e) {
   var tableParam = e && e.parameter ? e.parameter.table : null;
   if (!tableParam) {
@@ -87,12 +124,19 @@ function doGet(e) {
       ).setMimeType(ContentService.MimeType.JSON);
     }
 
+    var resetRowRaw = PropertiesService.getScriptProperties().getProperty(
+      resetKey(table)
+    );
+    var resetRow = resetRowRaw ? parseInt(resetRowRaw, 10) : 0;
+
     // Read all data rows: timestamp, table, ...menu, total, status, orderId
     var totalCols = MENU_NAMES.length + 5;
     var values = sheet.getRange(2, 1, lastRow - 1, totalCols).getValues();
     var orders = [];
 
     for (var i = values.length - 1; i >= 0 && orders.length < 30; i--) {
+      var sheetRowIndex = i + 2; // values[0] is sheet row 2
+      if (sheetRowIndex <= resetRow) continue;
       var row = values[i];
       if (Number(row[1]) !== table) continue;
 
