@@ -219,6 +219,12 @@ npm run preview      # Preview production build locally
 
 ---
 
+## Git Workflow
+
+Always push commits to GitHub (`git push`) immediately after committing, unless explicitly told not to. New branches should be pushed with `-u origin <branch>` to set tracking.
+
+---
+
 ## Deployment Checklist
 
 - [ ] All menu items have correct prices
