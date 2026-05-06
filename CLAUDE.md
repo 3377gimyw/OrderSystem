@@ -138,32 +138,16 @@ Empty cells mean the item was not ordered. Staff changes "상태" (status) colum
 
 ---
 
-## UI/UX Requirements
+## Design
 
-### Mobile-First Design
+**All design decisions defer to `PRODUCT.md` (and `DESIGN.md` once it exists).** Do not infer visual style, color, typography, motion, or copy tone from this file. PRODUCT.md is the source of truth for register, brand personality, anti-references, design principles, and accessibility posture. If something here appears to contradict PRODUCT.md, PRODUCT.md wins; flag the conflict so this file can be updated.
+
+Platform constraints (these are not aesthetic choices and apply regardless of visual direction):
+
 - Viewport: optimized for 360px–430px width (standard phones)
-- Touch-friendly: minimum 44px tap targets
 - No horizontal scrolling
-- Sticky header with cart icon + item count badge
-- Bottom-anchored "View Cart" button when items are in cart
-
-### Visual Style
-- Clean, modern, dark theme (suits bar/pub atmosphere)
-- Background: dark (gray-900 or similar)
-- Accent color: warm amber/orange for CTAs
-- Cards with subtle borders or shadows for menu items
-- Large, readable font sizes (minimum 16px body text)
-- Price formatting: Korean Won with comma separators (e.g., "15,000원")
-
-### Animations
-- Smooth cart drawer slide-up
-- Subtle add-to-cart feedback (button pulse or checkmark)
-- Page transitions
-
-### Accessibility
-- All images have alt text
-- Sufficient color contrast (WCAG AA)
-- Form labels on all inputs
+- Minimum 44px tap targets
+- Korean-only UI; price formatting uses comma separators with the 원 suffix (e.g., `15,000원`)
 
 ---
 
@@ -191,9 +175,9 @@ Use placeholder data initially. The menu should be easy to update by editing `sr
 2. **Price display** — Always format with commas and 원 suffix: `15,000원`
 3. **Table number validation** — Must be a number between 1 and 30. Show error if empty or out of range.
 4. **Cart persistence** — Use React state (Context). Cart clears after successful order.
-5. **Sold out items** — Grayed out with "품절" badge. Cannot be added to cart.
-6. **Empty cart** — Show friendly empty state with link back to menu.
-7. **Order submission** — Show loading spinner during API call. Show error message if it fails with retry button.
+5. **Sold out items** — Must be visibly unorderable (not merely dimmed) and cannot be added to cart. Exact treatment defers to PRODUCT.md / DESIGN.md.
+6. **Empty cart** — Provide a clear path back to the menu. Tone follows the brand voice in PRODUCT.md.
+7. **Order submission** — Block duplicate submits during the API call. Show a recoverable error with a retry path if it fails. Loading and error treatments defer to PRODUCT.md / DESIGN.md.
 8. **No page reload** — SPA behavior. Use React Router for navigation.
 9. **Responsive but mobile-focused** — Should look good on mobile. Desktop is secondary but shouldn't break.
 10. **Image optimization** — Use webp format, lazy loading, reasonable sizes (max 400px wide).
