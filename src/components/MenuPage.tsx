@@ -1,17 +1,22 @@
 import { Link } from "react-router-dom";
 import { menuItems } from "../data/menu";
 import { useCart } from "../context/CartContext";
+import { useMenu } from "../context/MenuContext";
 import { formatPrice } from "../utils/formatPrice";
 import MenuItemCard from "./MenuItemCard";
 
 export default function MenuPage() {
   const { totalItems, totalPrice } = useCart();
+  const { soldOutIds } = useMenu();
 
   return (
     <div className={`pt-3 ${totalItems > 0 ? "pb-28" : ""}`}>
       <div className="grid grid-cols-1 gap-3 px-4">
         {menuItems.map((item) => (
-          <MenuItemCard key={item.id} item={item} />
+          <MenuItemCard
+            key={item.id}
+            item={soldOutIds.has(item.id) ? { ...item, soldOut: true } : item}
+          />
         ))}
       </div>
 

@@ -8,6 +8,8 @@ var MENU_NAMES = [
 ];
 
 var STAFF_SECRET = "CHANGE_ME";
+var ADMIN_SECRET = "garden2026@";
+var SOLD_OUT_KEY = "soldOut.items";
 
 function resetKey(table) {
   return "reset." + table;
@@ -28,6 +30,14 @@ function doPost(e) {
 
     if (data.action === "reset") {
       return handleReset(data);
+    }
+
+    if (data.action === "adminReset") {
+      return handleAdminReset(data);
+    }
+
+    if (data.action === "setSoldOut") {
+      return handleSetSoldOut(data);
     }
 
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
@@ -100,8 +110,62 @@ function handleReset(data) {
   ).setMimeType(ContentService.MimeType.JSON);
 }
 
+function handleAdminReset(data) {
+  if (data.secret !== ADMIN_SECRET) {
+    return ContentService.createTextOutput(
+      JSON.stringify({ result: "error", message: "인증 실패" })
+    ).setMimeType(ContentService.MimeType.JSON);
+  }
+
+  var table = parseInt(data.table, 10);
+  if (isNaN(table) || table < 1 || table > 30) {
+    return ContentService.createTextOutput(
+      JSON.stringify({ result: "error", message: "invalid table" })
+    ).setMimeType(ContentService.MimeType.JSON);
+  }
+
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var lastRow = sheet.getLastRow();
+  PropertiesService.getScriptProperties().setProperty(
+    resetKey(table),
+    String(lastRow)
+  );
+
+  return ContentService.createTextOutput(
+    JSON.stringify({ result: "success", resetAtRow: lastRow })
+  ).setMimeType(ContentService.MimeType.JSON);
+}
+
+function handleSetSoldOut(data) {
+  if (data.secret !== ADMIN_SECRET) {
+    return ContentService.createTextOutput(
+      JSON.stringify({ result: "error", message: "인증 실패" })
+    ).setMimeType(ContentService.MimeType.JSON);
+  }
+
+  var ids = Array.isArray(data.soldOutIds) ? data.soldOutIds : [];
+  PropertiesService.getScriptProperties().setProperty(
+    SOLD_OUT_KEY,
+    JSON.stringify(ids)
+  );
+
+  return ContentService.createTextOutput(
+    JSON.stringify({ result: "success" })
+  ).setMimeType(ContentService.MimeType.JSON);
+}
+
 function doGet(e) {
-  var tableParam = e && e.parameter ? e.parameter.table : null;
+  var params = e && e.parameter ? e.parameter : {};
+
+  if (params.action === "soldOut") {
+    var raw = PropertiesService.getScriptProperties().getProperty(SOLD_OUT_KEY);
+    var ids = raw ? JSON.parse(raw) : [];
+    return ContentService.createTextOutput(
+      JSON.stringify({ result: "success", soldOutIds: ids })
+    ).setMimeType(ContentService.MimeType.JSON);
+  }
+
+  var tableParam = params.table || null;
   if (!tableParam) {
     return ContentService.createTextOutput(
       JSON.stringify({ result: "ok" })
