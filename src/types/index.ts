@@ -19,6 +19,7 @@ export interface CartItem {
 export interface Order {
   orderId: string;
   tableNumber: number;
+  depositorName: string;
   items: { name: string; quantity: number; price: number }[];
   totalPrice: number;
   timestamp: string;

@@ -19,6 +19,7 @@ export default function OrderConfirmation() {
     tableNumber: number;
     totalPrice: number;
     items: OrderedItem[];
+    depositorName?: string;
   } | null;
 
   const [showPayment, setShowPayment] = useState(true);
@@ -131,6 +132,14 @@ export default function OrderConfirmation() {
                     {copied ? "복사됨" : "복사"}
                   </button>
                 </div>
+                {state.depositorName && (
+                  <p className="text-gray-400 text-xs text-center mt-2">
+                    입금자명:{" "}
+                    <span className="text-white font-medium">
+                      {state.depositorName}
+                    </span>
+                  </p>
+                )}
               </div>
 
               <div className="space-y-2 mb-4">

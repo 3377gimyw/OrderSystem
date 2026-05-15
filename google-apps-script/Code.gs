@@ -44,7 +44,7 @@ function doPost(e) {
     var timestamp = new Date().toLocaleString("ko-KR", { timeZone: "Asia/Seoul" });
 
     // OrderID column is the last column: timestamp, table, ...menu, total, status, orderId
-    var ID_COL = MENU_NAMES.length + 5;
+    var ID_COL = MENU_NAMES.length + 6;
     var lastRow = sheet.getLastRow();
     if (data.orderId && lastRow > 1) {
       var startRow = Math.max(2, lastRow - 99);
@@ -65,7 +65,7 @@ function doPost(e) {
       qtyByName[item.name] = item.quantity;
     });
 
-    var row = [timestamp, data.tableNumber];
+    var row = [timestamp, data.tableNumber, data.depositorName || ""];
     MENU_NAMES.forEach(function (name) {
       row.push(qtyByName[name] != null ? qtyByName[name] : "");
     });
@@ -194,7 +194,7 @@ function doGet(e) {
     var resetRow = resetRowRaw ? parseInt(resetRowRaw, 10) : 0;
 
     // Read all data rows: timestamp, table, ...menu, total, status, orderId
-    var totalCols = MENU_NAMES.length + 5;
+    var totalCols = MENU_NAMES.length + 6;
     var values = sheet.getRange(2, 1, lastRow - 1, totalCols).getValues();
     var orders = [];
 
@@ -206,18 +206,18 @@ function doGet(e) {
 
       var items = [];
       for (var j = 0; j < MENU_NAMES.length; j++) {
-        var qty = row[2 + j];
+        var qty = row[3 + j];
         if (qty !== "" && qty != null && Number(qty) > 0) {
           items.push({ name: MENU_NAMES[j], quantity: Number(qty) });
         }
       }
 
       orders.push({
-        orderId: String(row[2 + MENU_NAMES.length + 2] || ""),
+        orderId: String(row[3 + MENU_NAMES.length + 2] || ""),
         timestamp: String(row[0] || ""),
         items: items,
-        totalPrice: Number(row[2 + MENU_NAMES.length] || 0),
-        status: String(row[2 + MENU_NAMES.length + 1] || ""),
+        totalPrice: Number(row[3 + MENU_NAMES.length] || 0),
+        status: String(row[3 + MENU_NAMES.length + 1] || ""),
       });
     }
 

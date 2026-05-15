@@ -7,6 +7,7 @@ import { formatPrice } from "../utils/formatPrice";
 export default function OrderForm() {
   const { items, totalPrice, clearCart, orderId, tableNumber } = useCart();
   const navigate = useNavigate();
+  const [depositorName, setDepositorName] = useState("");
   const [loading, setLoading] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const submittedRef = useRef(false);
@@ -42,6 +43,7 @@ export default function OrderForm() {
       await submitOrder({
         orderId,
         tableNumber,
+        depositorName,
         items: items.map((item) => ({
           name: item.menuItem.name,
           quantity: item.quantity,
@@ -59,7 +61,7 @@ export default function OrderForm() {
       submittedRef.current = true;
       navigate("/confirmation", {
         replace: true,
-        state: { tableNumber, totalPrice, items: orderedItems },
+        state: { tableNumber, totalPrice, items: orderedItems, depositorName },
       });
       clearCart();
     } catch {
@@ -100,6 +102,17 @@ export default function OrderForm() {
       </div>
 
       <form onSubmit={handleSubmit}>
+        <div className="mb-4">
+          <label className="block text-gray-400 text-sm mb-1">입금자명</label>
+          <input
+            type="text"
+            value={depositorName}
+            onChange={(e) => setDepositorName(e.target.value)}
+            placeholder="입금자 이름을 입력하세요"
+            className="w-full bg-[#080f1e] border border-[#0d1a33] text-white rounded-xl px-4 py-3 text-base focus:outline-none focus:border-blue-700 transition-colors"
+          />
+        </div>
+
         {submitError && (
           <div className="bg-red-900/30 border border-red-800 text-red-400 rounded-xl p-3 mb-4 text-sm">
             {submitError}
@@ -108,7 +121,7 @@ export default function OrderForm() {
 
         <button
           type="submit"
-          disabled={loading}
+          disabled={loading || !depositorName.trim()}
           className="w-full bg-blue-900 hover:bg-blue-800 disabled:bg-[#080f1e] disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-xl transition-colors"
         >
           {loading ? (
