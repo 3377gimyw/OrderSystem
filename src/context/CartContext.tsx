@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import type { ReactNode } from "react";
 import type { CartItem, MenuItem } from "../types";
 
@@ -17,8 +17,6 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | null>(null);
 
-const TABLE_STORAGE_KEY = "bar.tableNumber";
-
 function newOrderId() {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
     return crypto.randomUUID();
@@ -26,34 +24,14 @@ function newOrderId() {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
 }
 
-function readStoredTableNumber(): number | null {
-  if (typeof window === "undefined") return null;
-  const raw = window.localStorage.getItem(TABLE_STORAGE_KEY);
-  if (!raw) return null;
-  const n = parseInt(raw, 10);
-  if (isNaN(n) || n < 1 || n > 30) return null;
-  return n;
-}
-
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [orderId, setOrderId] = useState<string>(() => newOrderId());
-  const [tableNumber, setTableNumberState] = useState<number | null>(() =>
-    readStoredTableNumber()
-  );
+  const [tableNumber, setTableNumberState] = useState<number | null>(null);
 
   const setTableNumber = (n: number | null) => {
     setTableNumberState(n);
   };
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (tableNumber == null) {
-      window.localStorage.removeItem(TABLE_STORAGE_KEY);
-    } else {
-      window.localStorage.setItem(TABLE_STORAGE_KEY, String(tableNumber));
-    }
-  }, [tableNumber]);
 
   const addItem = (menuItem: MenuItem) => {
     setItems((prev) => {
