@@ -5,12 +5,6 @@ import { useCart } from "../context/CartContext";
 import { fetchOrderHistory } from "../utils/fetchOrderHistory";
 import { formatPrice } from "../utils/formatPrice";
 
-const STATUS_STYLES: Record<string, string> = {
-  신규: "bg-blue-900/40 text-blue-300 border border-blue-800",
-  준비중: "bg-amber-900/40 text-amber-300 border border-amber-800",
-  완료: "bg-green-900/40 text-green-300 border border-green-800",
-};
-
 function stripSeconds(timestamp: string): string {
   return timestamp.replace(/:\d{2}$/, "");
 }
@@ -68,15 +62,24 @@ export default function OrderHistoryPage() {
         <button
           onClick={load}
           disabled={loading}
-          className="text-blue-400 text-sm font-medium px-3 py-1.5 rounded-lg hover:bg-blue-900/30 disabled:opacity-50 transition-colors"
+          className="text-blue-400 text-sm font-medium px-3 py-1.5 rounded-lg hover:bg-blue-900/30 disabled:opacity-50 transition-colors flex items-center gap-1.5"
         >
-          {loading ? "..." : "새로고침"}
+          {loading && (
+            <span className="inline-block w-3.5 h-3.5 border-2 border-blue-400/40 border-t-blue-400 rounded-full animate-spin" />
+          )}
+          새로고침
         </button>
       </div>
 
       {error && (
         <div className="bg-red-900/30 border border-red-800 text-red-400 rounded-xl p-3 text-sm mb-3">
           {error}
+        </div>
+      )}
+
+      {loading && orders.length === 0 && (
+        <div className="flex justify-center py-12">
+          <span className="inline-block w-8 h-8 border-2 border-blue-400/30 border-t-blue-400 rounded-full animate-spin" />
         </div>
       )}
 
@@ -87,23 +90,14 @@ export default function OrderHistoryPage() {
       )}
 
       <div className="space-y-3">
-        {orders.map((order, i) => {
-          const statusClass =
-            STATUS_STYLES[order.status] ??
-            "bg-gray-800 text-gray-300 border border-gray-700";
-          return (
+        {orders.map((order, i) => (
             <div
               key={order.orderId || `${order.timestamp}-${i}`}
               className="bg-black border border-[#0d1a33] rounded-xl p-3"
             >
-              <div className="flex items-center justify-between mb-2">
+              <div className="mb-2">
                 <span className="text-gray-400 text-xs">
                   {stripSeconds(order.timestamp)}
-                </span>
-                <span
-                  className={`text-xs font-medium px-2 py-0.5 rounded-full ${statusClass}`}
-                >
-                  {order.status || "-"}
                 </span>
               </div>
               <div className="space-y-1 mb-2">
@@ -125,8 +119,7 @@ export default function OrderHistoryPage() {
                 </span>
               </div>
             </div>
-          );
-        })}
+        ))}
       </div>
     </div>
   );
