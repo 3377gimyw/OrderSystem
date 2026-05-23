@@ -13,7 +13,7 @@ export default function Cart() {
         <p className="text-gray-400 text-lg mb-4">장바구니가 비어있습니다</p>
         <Link
           to="/"
-          className="bg-blue-900 hover:bg-blue-800 text-white font-medium px-6 py-3 rounded-xl transition-colors"
+          className="bg-red-900 hover:bg-red-800 text-white font-medium px-6 py-3 rounded-xl transition-colors"
         >
           메뉴 보기
         </Link>
@@ -29,14 +29,14 @@ export default function Cart() {
           <CartItemComponent key={item.menuItem.id} item={item} />
         ))}
       </div>
-      <div className="flex items-center justify-between py-4 border-t border-[#0d1a33] mt-2">
+      <div className="flex items-center justify-between py-4 border-t border-[#1f0808] mt-2">
         <span className="text-gray-400 font-medium">총 금액</span>
         <span className="text-white text-xl font-bold">
           {formatPrice(totalPrice)}
         </span>
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-black/95 backdrop-blur border-t border-[#0d1a33]">
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-black/95 backdrop-blur border-t border-[#1f0808]">
         {tableNumber == null && (
           <p className="text-amber-400 text-xs text-center mb-2">
             테이블의 QR 코드를 다시 스캔해 주세요.
@@ -45,7 +45,7 @@ export default function Cart() {
         <button
           onClick={() => navigate("/order")}
           disabled={tableNumber == null}
-          className="w-full bg-blue-900 hover:bg-blue-800 disabled:bg-[#080f1e] disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-xl transition-colors"
+          className="w-full bg-red-900 hover:bg-red-800 disabled:bg-[#0d0303] disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-xl transition-colors"
         >
           주문하기
         </button>

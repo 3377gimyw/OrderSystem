@@ -10,17 +10,17 @@ export default function CartItem({ item }: CartItemProps) {
   const { updateQuantity, removeItem } = useCart();
 
   return (
-    <div className="flex items-center justify-between py-4 border-b border-[#0d1a33]">
+    <div className="flex items-center justify-between py-4 border-b border-[#1f0808]">
       <div className="flex-1">
         <h3 className="text-white font-medium">{item.menuItem.name}</h3>
-        <p className="text-blue-400 text-sm mt-0.5">
+        <p className="text-red-400 text-sm mt-0.5">
           {formatPrice(item.menuItem.price)}
         </p>
       </div>
       <div className="flex items-center gap-3">
         <button
           onClick={() => updateQuantity(item.menuItem.id, item.quantity - 1)}
-          className="bg-[#0d1a33] hover:bg-[#152444] text-white w-8 h-8 rounded-lg flex items-center justify-center transition-colors"
+          className="bg-[#1f0808] hover:bg-[#2e0c0c] text-white w-8 h-8 rounded-lg flex items-center justify-center transition-colors"
         >
           -
         </button>
@@ -29,7 +29,7 @@ export default function CartItem({ item }: CartItemProps) {
         </span>
         <button
           onClick={() => updateQuantity(item.menuItem.id, item.quantity + 1)}
-          className="bg-blue-900 hover:bg-blue-800 text-white w-8 h-8 rounded-lg flex items-center justify-center transition-colors"
+          className="bg-red-900 hover:bg-red-800 text-white w-8 h-8 rounded-lg flex items-center justify-center transition-colors"
         >
           +
         </button>

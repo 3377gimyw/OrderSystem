@@ -27,7 +27,7 @@ export default function OrderForm() {
         </p>
         <Link
           to="/"
-          className="inline-block bg-blue-900 hover:bg-blue-800 text-white font-medium py-2 px-5 rounded-xl transition-colors"
+          className="inline-block bg-red-900 hover:bg-red-800 text-white font-medium py-2 px-5 rounded-xl transition-colors"
         >
           메뉴로 돌아가기
         </Link>
@@ -75,8 +75,8 @@ export default function OrderForm() {
     <div className="px-4 py-6">
       <h2 className="text-white text-xl font-bold mb-6">주문 확인</h2>
 
-      <div className="bg-[#080f1e] rounded-xl p-4 mb-6">
-        <div className="flex justify-between pb-3 mb-2 border-b border-[#0d1a33]">
+      <div className="bg-[#0d0303] rounded-xl p-4 mb-6">
+        <div className="flex justify-between pb-3 mb-2 border-b border-[#1f0808]">
           <span className="text-gray-400 text-sm">테이블</span>
           <span className="text-white font-bold">{tableNumber}번</span>
         </div>
@@ -93,9 +93,9 @@ export default function OrderForm() {
             </span>
           </div>
         ))}
-        <div className="flex justify-between pt-3 mt-2 border-t border-[#0d1a33]">
+        <div className="flex justify-between pt-3 mt-2 border-t border-[#1f0808]">
           <span className="text-white font-bold">총 금액</span>
-          <span className="text-blue-400 font-bold">
+          <span className="text-red-400 font-bold">
             {formatPrice(totalPrice)}
           </span>
         </div>
@@ -109,7 +109,7 @@ export default function OrderForm() {
             value={depositorName}
             onChange={(e) => setDepositorName(e.target.value)}
             placeholder="입금자 이름을 입력하세요"
-            className="w-full bg-[#080f1e] border border-[#0d1a33] text-white rounded-xl px-4 py-3 text-base focus:outline-none focus:border-blue-700 transition-colors"
+            className="w-full bg-[#0d0303] border border-[#1f0808] text-white rounded-xl px-4 py-3 text-base focus:outline-none focus:border-red-700 transition-colors"
           />
         </div>
 
@@ -122,7 +122,7 @@ export default function OrderForm() {
         <button
           type="submit"
           disabled={loading || !depositorName.trim()}
-          className="w-full bg-blue-900 hover:bg-blue-800 disabled:bg-[#080f1e] disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-xl transition-colors"
+          className="w-full bg-red-900 hover:bg-red-800 disabled:bg-[#0d0303] disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-xl transition-colors"
         >
           {loading ? (
             <span className="flex items-center justify-center gap-2">

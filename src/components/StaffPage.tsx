@@ -62,12 +62,12 @@ export default function StaffPage() {
             value={secretInput}
             onChange={(e) => setSecretInput(e.target.value)}
             placeholder="비밀번호"
-            className="w-full bg-[#080f1e] border border-[#0d1a33] text-white rounded-xl px-4 py-3 text-base focus:outline-none focus:border-blue-700 transition-colors"
+            className="w-full bg-[#0d0303] border border-[#1f0808] text-white rounded-xl px-4 py-3 text-base focus:outline-none focus:border-red-700 transition-colors"
           />
           <button
             type="submit"
             disabled={!secretInput}
-            className="w-full mt-4 bg-blue-900 hover:bg-blue-800 disabled:bg-[#080f1e] disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-xl transition-colors"
+            className="w-full mt-4 bg-red-900 hover:bg-red-800 disabled:bg-[#0d0303] disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-xl transition-colors"
           >
             확인
           </button>
@@ -85,7 +85,7 @@ export default function StaffPage() {
             window.sessionStorage.removeItem(SECRET_KEY);
             setSecret(null);
           }}
-          className="text-gray-400 text-xs px-2 py-1 rounded hover:bg-[#0d1a33] transition-colors"
+          className="text-gray-400 text-xs px-2 py-1 rounded hover:bg-[#1f0808] transition-colors"
         >
           로그아웃
         </button>
@@ -106,7 +106,7 @@ export default function StaffPage() {
             key={t}
             onClick={() => setPendingTable(t)}
             disabled={busyTable === t}
-            className="bg-[#080f1e] hover:bg-[#0d1a33] disabled:opacity-50 border border-[#0d1a33] text-white font-medium py-3 rounded-lg transition-colors"
+            className="bg-[#0d0303] hover:bg-[#1f0808] disabled:opacity-50 border border-[#1f0808] text-white font-medium py-3 rounded-lg transition-colors"
           >
             {busyTable === t ? "..." : t}
           </button>
@@ -119,7 +119,7 @@ export default function StaffPage() {
           onClick={() => setPendingTable(null)}
         >
           <div
-            className="bg-[#080f1e] border border-[#0d1a33] rounded-xl p-5 w-full max-w-sm"
+            className="bg-[#0d0303] border border-[#1f0808] rounded-xl p-5 w-full max-w-sm"
             onClick={(e) => e.stopPropagation()}
           >
             <p className="text-white font-medium mb-1">
@@ -132,13 +132,13 @@ export default function StaffPage() {
             <div className="flex gap-2">
               <button
                 onClick={() => setPendingTable(null)}
-                className="flex-1 bg-[#0d1a33] hover:bg-[#13243f] text-white py-2.5 rounded-lg transition-colors"
+                className="flex-1 bg-[#1f0808] hover:bg-[#2e0c0c] text-white py-2.5 rounded-lg transition-colors"
               >
                 취소
               </button>
               <button
                 onClick={handleConfirmReset}
-                className="flex-1 bg-blue-900 hover:bg-blue-800 text-white font-bold py-2.5 rounded-lg transition-colors"
+                className="flex-1 bg-red-900 hover:bg-red-800 text-white font-bold py-2.5 rounded-lg transition-colors"
               >
                 초기화
               </button>

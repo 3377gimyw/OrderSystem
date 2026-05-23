@@ -5,15 +5,15 @@ export default function Header() {
   const hideHistory = pathname === "/admin" || pathname === "/staff";
 
   return (
-    <header className="sticky top-0 z-50 bg-black/95 backdrop-blur border-b border-[#0d1a33]">
+    <header className="sticky top-0 z-50 bg-black/95 backdrop-blur border-b border-[#1f0808]">
       <div className="flex items-center justify-between px-4 h-14">
-        <Link to="/" className="text-lg font-bold text-white">
-          주점 이름
+        <Link to="/" className="text-lg font-bold text-white tracking-tight">
+          403 Forbidden
         </Link>
         {!hideHistory && (
           <Link
             to="/history"
-            className="p-2 text-blue-400 hover:text-blue-300 transition-colors"
+            className="p-2 text-red-400 hover:text-red-300 transition-colors"
             aria-label="주문 내역"
           >
             <svg

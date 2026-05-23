@@ -51,18 +51,18 @@ export default function OrderConfirmation() {
         <p className="text-gray-400 mb-1">
           테이블 <span className="text-white font-bold">{state.tableNumber}</span>번
         </p>
-        <p className="text-blue-400 font-bold text-lg mb-8">
+        <p className="text-red-400 font-bold text-lg mb-8">
           {formatPrice(state.totalPrice)}
         </p>
         <button
           onClick={() => setShowPayment(true)}
-          className="text-blue-400 text-sm underline mb-6"
+          className="text-red-400 text-sm underline mb-6"
         >
           입금 정보 다시 보기
         </button>
         <Link
           to="/"
-          className="bg-blue-900 hover:bg-blue-800 text-white font-medium px-6 py-3 rounded-xl transition-colors"
+          className="bg-red-900 hover:bg-red-800 text-white font-medium px-6 py-3 rounded-xl transition-colors"
         >
           추가 주문하기
         </Link>
@@ -88,7 +88,7 @@ export default function OrderConfirmation() {
           >
             <div
               onClick={(e) => e.stopPropagation()}
-              className="bg-[#080f1e] border border-[#0d1a33] rounded-2xl w-full max-w-sm p-6"
+              className="bg-[#0d0303] border border-[#1f0808] rounded-2xl w-full max-w-sm p-6"
             >
               <div className="flex justify-center mb-4">
                 <div className="bg-green-900/30 border border-green-800 rounded-full w-16 h-16 flex items-center justify-center">
@@ -122,12 +122,12 @@ export default function OrderConfirmation() {
                   {BANK_NAME} · {BANK_HOLDER}
                 </p>
                 <div className="flex items-center justify-center gap-2">
-                  <p className="text-blue-400 font-bold text-base">
+                  <p className="text-red-400 font-bold text-base">
                     {BANK_ACCOUNT_NUMBER}
                   </p>
                   <button
                     onClick={handleCopyAccount}
-                    className="bg-blue-900 hover:bg-blue-800 active:scale-95 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-all"
+                    className="bg-red-900 hover:bg-red-800 active:scale-95 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-all"
                   >
                     {copied ? "복사됨" : "복사"}
                   </button>
@@ -155,16 +155,16 @@ export default function OrderConfirmation() {
                 ))}
               </div>
 
-              <div className="flex justify-between pt-3 border-t border-[#0d1a33] mb-6">
+              <div className="flex justify-between pt-3 border-t border-[#1f0808] mb-6">
                 <span className="text-white font-bold">총 입금액</span>
-                <span className="text-blue-400 font-bold text-lg">
+                <span className="text-red-400 font-bold text-lg">
                   {formatPrice(state.totalPrice)}
                 </span>
               </div>
 
               <button
                 onClick={() => setShowPayment(false)}
-                className="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-3 rounded-xl transition-colors"
+                className="w-full bg-red-900 hover:bg-red-800 text-white font-bold py-3 rounded-xl transition-colors"
               >
                 확인
               </button>

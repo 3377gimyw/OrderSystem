@@ -13,7 +13,7 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
 
   return (
     <div
-      className={`bg-[#080f1e] rounded-xl border border-[#0d1a33] overflow-hidden ${
+      className={`bg-[#0d0303] rounded-xl border border-[#1f0808] overflow-hidden ${
         item.soldOut ? "opacity-50" : ""
       }`}
     >
@@ -43,13 +43,13 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
           <p className="text-gray-400 text-sm mt-1">{item.description}</p>
         )}
         <div className="flex items-center justify-between mt-3">
-          <span className="text-blue-400 font-bold">
+          <span className="text-red-400 font-bold">
             {formatPrice(item.price)}
           </span>
           {item.soldOut ? null : quantity === 0 ? (
             <button
               onClick={() => addItem(item)}
-              className="bg-blue-900 hover:bg-blue-800 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors active:scale-95"
+              className="bg-red-900 hover:bg-red-800 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors active:scale-95"
             >
               담기
             </button>
@@ -57,7 +57,7 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
             <div className="flex items-center gap-3">
               <button
                 onClick={() => updateQuantity(item.id, quantity - 1)}
-                className="bg-[#0d1a33] hover:bg-[#152444] text-white w-8 h-8 rounded-lg flex items-center justify-center transition-colors"
+                className="bg-[#1f0808] hover:bg-[#2e0c0c] text-white w-8 h-8 rounded-lg flex items-center justify-center transition-colors"
               >
                 -
               </button>
@@ -66,7 +66,7 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
               </span>
               <button
                 onClick={() => updateQuantity(item.id, quantity + 1)}
-                className="bg-blue-900 hover:bg-blue-800 text-white w-8 h-8 rounded-lg flex items-center justify-center transition-colors"
+                className="bg-red-900 hover:bg-red-800 text-white w-8 h-8 rounded-lg flex items-center justify-center transition-colors"
               >
                 +
               </button>

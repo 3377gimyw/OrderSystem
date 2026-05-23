@@ -30,8 +30,8 @@ export default function MenuPage() {
             onClick={() => setActiveTab(tab)}
             className={`px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
               activeTab === tab
-                ? "bg-blue-900 text-white"
-                : "bg-[#0d1a33] text-gray-400 hover:text-white"
+                ? "bg-red-900 text-white"
+                : "bg-[#1f0808] text-gray-400 hover:text-white"
             }`}
           >
             {tab}
@@ -49,10 +49,10 @@ export default function MenuPage() {
       </div>
 
       {totalItems > 0 && (
-        <div className="fixed bottom-0 left-0 right-0 p-4 bg-black/95 backdrop-blur border-t border-[#0d1a33]">
+        <div className="fixed bottom-0 left-0 right-0 p-4 bg-black/95 backdrop-blur border-t border-[#1f0808]">
           <Link
             to="/cart"
-            className="flex items-center justify-between bg-blue-900 hover:bg-blue-800 text-white font-bold py-3 px-4 rounded-xl transition-colors"
+            className="flex items-center justify-between bg-red-900 hover:bg-red-800 text-white font-bold py-3 px-4 rounded-xl transition-colors"
           >
             <span>장바구니 ({totalItems})</span>
             <span>{formatPrice(totalPrice)}</span>

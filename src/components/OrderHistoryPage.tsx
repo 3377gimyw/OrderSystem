@@ -42,7 +42,7 @@ export default function OrderHistoryPage() {
         </p>
         <Link
           to="/"
-          className="inline-block bg-blue-900 hover:bg-blue-800 text-white font-medium py-2 px-5 rounded-xl transition-colors"
+          className="inline-block bg-red-900 hover:bg-red-800 text-white font-medium py-2 px-5 rounded-xl transition-colors"
         >
           메뉴로 돌아가기
         </Link>
@@ -62,10 +62,10 @@ export default function OrderHistoryPage() {
         <button
           onClick={load}
           disabled={loading}
-          className="text-blue-400 text-sm font-medium px-3 py-1.5 rounded-lg hover:bg-blue-900/30 disabled:opacity-50 transition-colors flex items-center gap-1.5"
+          className="text-red-400 text-sm font-medium px-3 py-1.5 rounded-lg hover:bg-red-900/30 disabled:opacity-50 transition-colors flex items-center gap-1.5"
         >
           {loading && (
-            <span className="inline-block w-3.5 h-3.5 border-2 border-blue-400/40 border-t-blue-400 rounded-full animate-spin" />
+            <span className="inline-block w-3.5 h-3.5 border-2 border-red-400/40 border-t-red-400 rounded-full animate-spin" />
           )}
           새로고침
         </button>
@@ -79,7 +79,7 @@ export default function OrderHistoryPage() {
 
       {loading && orders.length === 0 && (
         <div className="flex justify-center py-12">
-          <span className="inline-block w-8 h-8 border-2 border-blue-400/30 border-t-blue-400 rounded-full animate-spin" />
+          <span className="inline-block w-8 h-8 border-2 border-red-400/30 border-t-red-400 rounded-full animate-spin" />
         </div>
       )}
 
@@ -93,7 +93,7 @@ export default function OrderHistoryPage() {
         {orders.map((order, i) => (
             <div
               key={order.orderId || `${order.timestamp}-${i}`}
-              className="bg-black border border-[#0d1a33] rounded-xl p-3"
+              className="bg-black border border-[#1f0808] rounded-xl p-3"
             >
               <div className="mb-2">
                 <span className="text-gray-400 text-xs">
@@ -112,9 +112,9 @@ export default function OrderHistoryPage() {
                   </div>
                 ))}
               </div>
-              <div className="flex justify-between pt-2 border-t border-[#0d1a33]">
+              <div className="flex justify-between pt-2 border-t border-[#1f0808]">
                 <span className="text-gray-400 text-xs">합계</span>
-                <span className="text-blue-400 font-bold text-sm">
+                <span className="text-red-400 font-bold text-sm">
                   {formatPrice(order.totalPrice)}
                 </span>
               </div>
