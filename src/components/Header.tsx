@@ -7,7 +7,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-black/95 backdrop-blur border-b border-[#1f0808]">
       <div className="flex items-center justify-between px-4 h-14">
-        <Link to="/" className="text-lg font-bold text-white tracking-tight">
+        <Link to="/" className="text-lg font-bold text-red-500 tracking-tight">
           403 Forbidden
         </Link>
         {!hideHistory && (

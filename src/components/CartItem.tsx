@@ -13,7 +13,7 @@ export default function CartItem({ item }: CartItemProps) {
     <div className="flex items-center justify-between py-4 border-b border-[#1f0808]">
       <div className="flex-1">
         <h3 className="text-white font-medium">{item.menuItem.name}</h3>
-        <p className="text-red-400 text-sm mt-0.5">
+        <p className="text-white text-sm mt-0.5">
           {formatPrice(item.menuItem.price)}
         </p>
       </div>

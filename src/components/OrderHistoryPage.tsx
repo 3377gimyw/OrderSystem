@@ -114,7 +114,7 @@ export default function OrderHistoryPage() {
               </div>
               <div className="flex justify-between pt-2 border-t border-[#1f0808]">
                 <span className="text-gray-400 text-xs">합계</span>
-                <span className="text-red-400 font-bold text-sm">
+                <span className="text-white font-bold text-sm">
                   {formatPrice(order.totalPrice)}
                 </span>
               </div>

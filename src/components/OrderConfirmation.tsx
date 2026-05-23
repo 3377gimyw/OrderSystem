@@ -51,7 +51,7 @@ export default function OrderConfirmation() {
         <p className="text-gray-400 mb-1">
           테이블 <span className="text-white font-bold">{state.tableNumber}</span>번
         </p>
-        <p className="text-red-400 font-bold text-lg mb-8">
+        <p className="text-white font-bold text-lg mb-8">
           {formatPrice(state.totalPrice)}
         </p>
         <button
@@ -157,7 +157,7 @@ export default function OrderConfirmation() {
 
               <div className="flex justify-between pt-3 border-t border-[#1f0808] mb-6">
                 <span className="text-white font-bold">총 입금액</span>
-                <span className="text-red-400 font-bold text-lg">
+                <span className="text-white font-bold text-lg">
                   {formatPrice(state.totalPrice)}
                 </span>
               </div>

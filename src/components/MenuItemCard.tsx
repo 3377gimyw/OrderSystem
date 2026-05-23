@@ -43,7 +43,7 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
           <p className="text-gray-400 text-sm mt-1">{item.description}</p>
         )}
         <div className="flex items-center justify-between mt-3">
-          <span className="text-red-400 font-bold">
+          <span className="text-white font-bold">
             {formatPrice(item.price)}
           </span>
           {item.soldOut ? null : quantity === 0 ? (

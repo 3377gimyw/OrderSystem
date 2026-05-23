@@ -95,7 +95,7 @@ export default function OrderForm() {
         ))}
         <div className="flex justify-between pt-3 mt-2 border-t border-[#1f0808]">
           <span className="text-white font-bold">총 금액</span>
-          <span className="text-red-400 font-bold">
+          <span className="text-white font-bold">
             {formatPrice(totalPrice)}
           </span>
         </div>
