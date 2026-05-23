@@ -92,7 +92,7 @@ function handleReset(data) {
   }
 
   var table = parseInt(data.table, 10);
-  if (isNaN(table) || table < 1 || table > 30) {
+  if (isNaN(table) || table < 1 || table > 48) {
     return ContentService.createTextOutput(
       JSON.stringify({ result: "error", message: "invalid table" })
     ).setMimeType(ContentService.MimeType.JSON);
@@ -118,7 +118,7 @@ function handleAdminReset(data) {
   }
 
   var table = parseInt(data.table, 10);
-  if (isNaN(table) || table < 1 || table > 30) {
+  if (isNaN(table) || table < 1 || table > 48) {
     return ContentService.createTextOutput(
       JSON.stringify({ result: "error", message: "invalid table" })
     ).setMimeType(ContentService.MimeType.JSON);
@@ -173,7 +173,7 @@ function doGet(e) {
   }
 
   var table = parseInt(tableParam, 10);
-  if (isNaN(table) || table < 1 || table > 30) {
+  if (isNaN(table) || table < 1 || table > 48) {
     return ContentService.createTextOutput(
       JSON.stringify({ result: "error", message: "invalid table" })
     ).setMimeType(ContentService.MimeType.JSON);

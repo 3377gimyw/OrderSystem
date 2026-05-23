@@ -10,7 +10,7 @@ export function useTablePrefill() {
     const raw = params.get("t") ?? params.get("table");
     if (!raw) return;
     const n = parseInt(raw, 10);
-    if (isNaN(n) || n < 1 || n > 30) return;
+    if (isNaN(n) || n < 1 || n > 48) return;
     setTableNumber(n);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

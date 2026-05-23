@@ -5,7 +5,7 @@ import { adminResetTable } from "../utils/adminResetTable";
 
 const ADMIN_PASSWORD = "garden2026@";
 const SESSION_KEY = "bar.adminAuth";
-const TABLES = Array.from({ length: 30 }, (_, i) => i + 1);
+const TABLES = Array.from({ length: 48 }, (_, i) => i + 1);
 
 export default function AdminPage() {
   const [authed, setAuthed] = useState(

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { resetTableHistory } from "../utils/resetTableHistory";
 
 const SECRET_KEY = "bar.staffSecret";
-const TABLES = Array.from({ length: 30 }, (_, i) => i + 1);
+const TABLES = Array.from({ length: 48 }, (_, i) => i + 1);
 
 export default function StaffPage() {
   const [secret, setSecret] = useState<string | null>(null);
