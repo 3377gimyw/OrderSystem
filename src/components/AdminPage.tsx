@@ -60,7 +60,7 @@ export default function AdminPage() {
     try {
       await adminResetTable(table);
       setTableToast(`테이블 ${table} 초기화 완료`);
-      setTimeout(() => setTableToast(""), 2000);
+      setTimeout(() => setTableToast(""), 2500);
     } catch (err) {
       setTableError(err instanceof Error ? err.message : "초기화 실패");
     } finally {
@@ -82,117 +82,134 @@ export default function AdminPage() {
 
   if (!authed) {
     return (
-      <div className="px-5 pt-12 max-w-md mx-auto">
-        <h2 className="text-white text-lg font-bold mb-4">관리자 로그인</h2>
-        <form onSubmit={handleLogin}>
-          <input
-            type="password"
-            value={pwInput}
-            onChange={(e) => setPwInput(e.target.value)}
-            placeholder="비밀번호"
-            className="w-full bg-[#0d0303] border border-[#1f0808] text-white rounded-xl px-4 py-3 text-base focus:outline-none focus:border-red-700 transition-colors"
-          />
-          {pwError && (
-            <p className="text-red-400 text-sm mt-2">비밀번호가 올바르지 않습니다.</p>
-          )}
-          <button
-            type="submit"
-            disabled={!pwInput}
-            className="w-full mt-4 bg-red-900 hover:bg-red-800 disabled:bg-[#0d0303] disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-xl transition-colors"
-          >
-            확인
-          </button>
-        </form>
+      <div className="min-h-screen flex items-center justify-center px-6">
+        <div className="w-full max-w-sm">
+          <h2 className="text-white text-2xl font-bold mb-6">관리자 로그인</h2>
+          <form onSubmit={handleLogin}>
+            <input
+              type="password"
+              value={pwInput}
+              onChange={(e) => setPwInput(e.target.value)}
+              placeholder="비밀번호"
+              autoFocus
+              className="w-full bg-[#0d0303] border border-[#1f0808] text-white rounded-xl px-4 py-3 text-base focus:outline-none focus:border-red-700 transition-colors"
+            />
+            {pwError && (
+              <p className="text-red-400 text-sm mt-2">비밀번호가 올바르지 않습니다.</p>
+            )}
+            <button
+              type="submit"
+              disabled={!pwInput}
+              className="w-full mt-4 bg-red-900 hover:bg-red-800 disabled:bg-[#0d0303] disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-xl transition-colors"
+            >
+              확인
+            </button>
+          </form>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="px-5 pt-5 pb-16 max-w-md mx-auto space-y-8">
-      <div className="flex items-center justify-between">
-        <h2 className="text-white text-lg font-bold">관리자</h2>
+    <div className="min-h-screen px-8 py-6">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-8 pb-4 border-b border-[#1f0808]">
+        <h2 className="text-white text-xl font-bold">관리자</h2>
         <button
           onClick={handleLogout}
-          className="text-gray-400 text-xs px-2 py-1 rounded hover:bg-[#1f0808] transition-colors"
+          className="text-gray-400 text-sm px-3 py-1.5 rounded-lg hover:bg-[#1f0808] transition-colors"
         >
           로그아웃
         </button>
       </div>
 
-      {/* Menu soldOut toggles */}
-      <section>
-        <h3 className="text-white font-semibold mb-2">메뉴 품절 관리</h3>
-        {toggleError && (
-          <div className="bg-red-900/30 border border-red-800 text-red-400 rounded-xl p-3 text-sm mb-3">
-            {toggleError}
-          </div>
-        )}
-        <div className="space-y-2">
-          {menuItems.map((item) => {
-            const isSoldOut = soldOutIds.has(item.id);
-            const busy = busyToggle === item.id;
-            return (
-              <div
-                key={item.id}
-                className="flex items-center justify-between bg-[#0d0303] border border-[#1f0808] rounded-xl px-4 py-3"
-              >
-                <div>
-                  <span className="text-white text-sm">{item.name}</span>
-                  {isSoldOut && (
-                    <span className="ml-2 text-red-400 text-xs">품절</span>
-                  )}
-                </div>
-                <button
-                  onClick={() => handleToggle(item.id)}
-                  disabled={busy}
-                  className={`text-xs font-medium px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${
-                    isSoldOut
-                      ? "bg-green-900/50 hover:bg-green-900 text-green-300"
-                      : "bg-red-900/50 hover:bg-red-900 text-red-300"
-                  }`}
-                >
-                  {busy ? "..." : isSoldOut ? "판매 재개" : "품절 처리"}
-                </button>
-              </div>
-            );
-          })}
-        </div>
-      </section>
+      {/* Two-column layout */}
+      <div className="flex gap-10 items-start">
 
-      {/* Table reset */}
-      <section>
-        <h3 className="text-white font-semibold mb-1">테이블 초기화</h3>
-        <p className="text-gray-400 text-xs mb-3">
-          새 손님이 도착했을 때 해당 테이블의 주문 내역을 초기화하세요.
-        </p>
-        {tableError && (
-          <div className="bg-red-900/30 border border-red-800 text-red-400 rounded-xl p-3 text-sm mb-3">
-            {tableError}
-          </div>
-        )}
-        <div className="space-y-3">
-          {SECTIONS.map(({ label, count }) => (
-            <div key={label}>
-              <p className="text-gray-500 text-xs mb-1.5">{label}구역</p>
-              <div className="grid grid-cols-4 gap-2">
-                {Array.from({ length: count }, (_, i) => {
-                  const t = `${label}-${i + 1}`;
-                  return (
-                    <button
-                      key={t}
-                      onClick={() => setPendingTable(t)}
-                      disabled={busyTable === t}
-                      className="bg-[#0d0303] hover:bg-[#1f0808] disabled:opacity-50 border border-[#1f0808] text-white font-medium py-3 rounded-lg transition-colors text-sm"
-                    >
-                      {busyTable === t ? "..." : t}
-                    </button>
-                  );
-                })}
-              </div>
+        {/* Left: sold-out management */}
+        <div className="w-72 shrink-0">
+          <h3 className="text-white font-semibold text-base mb-3">메뉴 품절 관리</h3>
+          {toggleError && (
+            <div className="bg-red-900/30 border border-red-800 text-red-400 rounded-xl p-3 text-sm mb-3">
+              {toggleError}
             </div>
-          ))}
+          )}
+          <div className="space-y-2">
+            {menuItems.map((item) => {
+              const isSoldOut = soldOutIds.has(item.id);
+              const busy = busyToggle === item.id;
+              return (
+                <div
+                  key={item.id}
+                  className="flex items-center justify-between bg-[#0d0303] border border-[#1f0808] rounded-xl px-4 py-3"
+                >
+                  <div>
+                    <span className="text-white text-sm">{item.name}</span>
+                    {isSoldOut && (
+                      <span className="ml-2 text-red-400 text-xs">품절</span>
+                    )}
+                  </div>
+                  <button
+                    onClick={() => handleToggle(item.id)}
+                    disabled={busy}
+                    className={`text-xs font-medium px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 whitespace-nowrap ${
+                      isSoldOut
+                        ? "bg-green-900/50 hover:bg-green-900 text-green-300"
+                        : "bg-red-900/50 hover:bg-red-900 text-red-300"
+                    }`}
+                  >
+                    {busy ? "..." : isSoldOut ? "판매 재개" : "품절 처리"}
+                  </button>
+                </div>
+              );
+            })}
+          </div>
         </div>
-      </section>
+
+        {/* Divider */}
+        <div className="self-stretch w-px bg-[#1f0808] shrink-0" />
+
+        {/* Right: table reset */}
+        <div className="flex-1">
+          <div className="flex items-baseline gap-3 mb-1">
+            <h3 className="text-white font-semibold text-base">테이블 초기화</h3>
+            <span className="text-gray-500 text-xs">
+              새 손님이 도착했을 때 해당 테이블을 초기화하세요
+            </span>
+          </div>
+
+          {tableError && (
+            <div className="bg-red-900/30 border border-red-800 text-red-400 rounded-xl p-3 text-sm mb-4 mt-3">
+              {tableError}
+            </div>
+          )}
+
+          <div className="mt-4 space-y-2">
+            {SECTIONS.map(({ label, count }) => (
+              <div key={label} className="flex items-center gap-4">
+                <span className="text-gray-400 font-bold text-sm w-5 shrink-0 text-center">
+                  {label}
+                </span>
+                <div className="flex gap-2 flex-wrap">
+                  {Array.from({ length: count }, (_, i) => {
+                    const t = `${label}-${i + 1}`;
+                    return (
+                      <button
+                        key={t}
+                        onClick={() => setPendingTable(t)}
+                        disabled={busyTable === t}
+                        className="bg-[#0d0303] hover:bg-[#1f0808] disabled:opacity-50 border border-[#1f0808] text-white font-medium px-5 py-2.5 rounded-lg transition-colors text-sm min-w-[64px]"
+                      >
+                        {busyTable === t ? "..." : t}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
 
       {/* Confirm reset modal */}
       {pendingTable != null && (
@@ -201,17 +218,17 @@ export default function AdminPage() {
           onClick={() => setPendingTable(null)}
         >
           <div
-            className="bg-[#0d0303] border border-[#1f0808] rounded-xl p-5 w-full max-w-sm"
+            className="bg-[#0d0303] border border-[#1f0808] rounded-xl p-6 w-full max-w-sm"
             onClick={(e) => e.stopPropagation()}
           >
-            <p className="text-white font-medium mb-1">
+            <p className="text-white font-semibold text-lg mb-1">
               테이블 {pendingTable} 초기화
             </p>
-            <p className="text-gray-400 text-sm mb-5">
+            <p className="text-gray-400 text-sm mb-6">
               이 테이블의 주문 내역이 손님에게 보이지 않게 됩니다. 시트의 데이터는
               유지됩니다.
             </p>
-            <div className="flex gap-2">
+            <div className="flex gap-3">
               <button
                 onClick={() => setPendingTable(null)}
                 className="flex-1 bg-[#1f0808] hover:bg-[#2e0c0c] text-white py-2.5 rounded-lg transition-colors"
@@ -230,7 +247,7 @@ export default function AdminPage() {
       )}
 
       {tableToast && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-green-900/90 border border-green-800 text-green-200 text-sm px-4 py-2 rounded-full">
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-green-900/90 border border-green-800 text-green-200 text-sm px-5 py-2.5 rounded-full whitespace-nowrap">
           {tableToast}
         </div>
       )}
