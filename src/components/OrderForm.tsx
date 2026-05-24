@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { submitOrder } from "../utils/submitOrder";
@@ -10,6 +11,7 @@ export default function OrderForm() {
   const [depositorName, setDepositorName] = useState("");
   const [loading, setLoading] = useState(false);
   const [submitError, setSubmitError] = useState("");
+  const [showConfirm, setShowConfirm] = useState(false);
   const submittedRef = useRef(false);
 
   if (items.length === 0 && !submittedRef.current) {
@@ -35,9 +37,14 @@ export default function OrderForm() {
     );
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitError("");
+    setShowConfirm(true);
+  };
+
+  const handleConfirm = async () => {
+    setShowConfirm(false);
     setLoading(true);
     try {
       await submitOrder({
@@ -154,6 +161,45 @@ export default function OrderForm() {
           )}
         </button>
       </form>
+
+      {showConfirm && createPortal(
+        <div
+          style={{
+            position: "fixed",
+            top: 0, left: 0, right: 0, bottom: 0,
+            zIndex: 9999,
+            backgroundColor: "rgba(0,0,0,0.8)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "1rem",
+          }}
+        >
+          <div className="bg-[#0d0303] border border-[#1f0808] rounded-2xl w-full max-w-sm p-6">
+            <h3 className="text-white text-lg font-bold text-center mb-2">
+              입금자명이 맞나요?
+            </h3>
+            <p className="text-red-400 font-bold text-center text-xl mb-6">
+              {depositorName}
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowConfirm(false)}
+                className="flex-1 bg-[#1f0808] hover:bg-[#2a0a0a] text-white font-bold py-3 rounded-xl transition-colors"
+              >
+                수정하기
+              </button>
+              <button
+                onClick={handleConfirm}
+                className="flex-1 bg-red-900 hover:bg-red-800 text-white font-bold py-3 rounded-xl transition-colors"
+              >
+                맞습니다
+              </button>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
     </div>
   );
 }
