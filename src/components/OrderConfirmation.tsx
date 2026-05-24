@@ -26,9 +26,10 @@ export default function OrderConfirmation() {
   const [copied, setCopied] = useState(false);
 
   const handleCopyAccount = async () => {
-    const digitsOnly = BANK_ACCOUNT_NUMBER.replace(/-/g, "");
+    if (!state) return;
+    const text = `${BANK_NAME} ${BANK_ACCOUNT_NUMBER} ${BANK_HOLDER}\n입금액: ${formatPrice(state.totalPrice)}`;
     try {
-      await navigator.clipboard.writeText(digitsOnly);
+      await navigator.clipboard.writeText(text);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
