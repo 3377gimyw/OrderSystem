@@ -16,7 +16,7 @@ interface OrderedItem {
 export default function OrderConfirmation() {
   const location = useLocation();
   const state = location.state as {
-    tableNumber: number;
+    tableNumber: string;
     totalPrice: number;
     items: OrderedItem[];
     depositorName?: string;
@@ -49,7 +49,7 @@ export default function OrderConfirmation() {
           주문이 완료되었습니다!
         </h2>
         <p className="text-gray-400 mb-1">
-          테이블 <span className="text-white font-bold">{state.tableNumber}</span>번
+          테이블 <span className="text-white font-bold">{state.tableNumber}</span>
         </p>
         <p className="text-white font-bold text-lg mb-8">
           {formatPrice(state.totalPrice)}

@@ -1,7 +1,7 @@
 const GOOGLE_SCRIPT_URL = import.meta.env.VITE_GOOGLE_SCRIPT_URL;
 
 export async function resetTableHistory(
-  table: number,
+  table: string,
   secret: string
 ): Promise<void> {
   if (!GOOGLE_SCRIPT_URL) {

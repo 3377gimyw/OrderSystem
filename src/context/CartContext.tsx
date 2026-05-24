@@ -11,8 +11,8 @@ interface CartContextType {
   totalItems: number;
   totalPrice: number;
   orderId: string;
-  tableNumber: number | null;
-  setTableNumber: (n: number | null) => void;
+  tableNumber: string | null;
+  setTableNumber: (n: string | null) => void;
 }
 
 const CartContext = createContext<CartContextType | null>(null);
@@ -27,9 +27,9 @@ function newOrderId() {
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [orderId, setOrderId] = useState<string>(() => newOrderId());
-  const [tableNumber, setTableNumberState] = useState<number | null>(null);
+  const [tableNumber, setTableNumberState] = useState<string | null>(null);
 
-  const setTableNumber = (n: number | null) => {
+  const setTableNumber = (n: string | null) => {
     setTableNumberState(n);
   };
 

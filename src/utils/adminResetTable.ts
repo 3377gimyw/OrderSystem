@@ -1,7 +1,7 @@
 const GOOGLE_SCRIPT_URL = import.meta.env.VITE_GOOGLE_SCRIPT_URL;
 const ADMIN_SECRET = "garden2026@";
 
-export async function adminResetTable(table: number): Promise<void> {
+export async function adminResetTable(table: string): Promise<void> {
   if (!GOOGLE_SCRIPT_URL) {
     throw new Error("Google Apps Script URL이 설정되지 않았습니다.");
   }

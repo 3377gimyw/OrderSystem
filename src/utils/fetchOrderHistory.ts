@@ -3,7 +3,7 @@ import type { OrderHistoryEntry } from "../types";
 const GOOGLE_SCRIPT_URL = import.meta.env.VITE_GOOGLE_SCRIPT_URL;
 
 export async function fetchOrderHistory(
-  table: number
+  table: string
 ): Promise<OrderHistoryEntry[]> {
   if (!GOOGLE_SCRIPT_URL) {
     throw new Error("Google Apps Script URL이 설정되지 않았습니다.");

@@ -56,7 +56,7 @@ export default function OrderHistoryPage() {
         <div>
           <h2 className="text-white text-lg font-bold">주문 내역</h2>
           <p className="text-gray-400 text-xs mt-0.5">
-            테이블 {tableNumber}번
+            테이블 {tableNumber}
           </p>
         </div>
         <button

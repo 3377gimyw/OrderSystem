@@ -5,7 +5,17 @@ import { adminResetTable } from "../utils/adminResetTable";
 
 const ADMIN_PASSWORD = "garden2026@";
 const SESSION_KEY = "bar.adminAuth";
-const TABLES = Array.from({ length: 48 }, (_, i) => i + 1);
+
+const SECTIONS: { label: string; count: number }[] = [
+  { label: "A", count: 4 },
+  { label: "B", count: 4 },
+  { label: "C", count: 6 },
+  { label: "D", count: 6 },
+  { label: "E", count: 6 },
+  { label: "F", count: 7 },
+  { label: "G", count: 7 },
+  { label: "H", count: 8 },
+];
 
 export default function AdminPage() {
   const [authed, setAuthed] = useState(
@@ -14,8 +24,8 @@ export default function AdminPage() {
   const [pwInput, setPwInput] = useState("");
   const [pwError, setPwError] = useState(false);
 
-  const [pendingTable, setPendingTable] = useState<number | null>(null);
-  const [busyTable, setBusyTable] = useState<number | null>(null);
+  const [pendingTable, setPendingTable] = useState<string | null>(null);
+  const [busyTable, setBusyTable] = useState<string | null>(null);
   const [tableToast, setTableToast] = useState("");
   const [tableError, setTableError] = useState("");
 
@@ -49,7 +59,7 @@ export default function AdminPage() {
     setTableError("");
     try {
       await adminResetTable(table);
-      setTableToast(`테이블 ${table}번 초기화 완료`);
+      setTableToast(`테이블 ${table} 초기화 완료`);
       setTimeout(() => setTableToast(""), 2000);
     } catch (err) {
       setTableError(err instanceof Error ? err.message : "초기화 실패");
@@ -160,16 +170,26 @@ export default function AdminPage() {
             {tableError}
           </div>
         )}
-        <div className="grid grid-cols-5 gap-2">
-          {TABLES.map((t) => (
-            <button
-              key={t}
-              onClick={() => setPendingTable(t)}
-              disabled={busyTable === t}
-              className="bg-[#0d0303] hover:bg-[#1f0808] disabled:opacity-50 border border-[#1f0808] text-white font-medium py-3 rounded-lg transition-colors"
-            >
-              {busyTable === t ? "..." : t}
-            </button>
+        <div className="space-y-3">
+          {SECTIONS.map(({ label, count }) => (
+            <div key={label}>
+              <p className="text-gray-500 text-xs mb-1.5">{label}구역</p>
+              <div className="grid grid-cols-4 gap-2">
+                {Array.from({ length: count }, (_, i) => {
+                  const t = `${label}-${i + 1}`;
+                  return (
+                    <button
+                      key={t}
+                      onClick={() => setPendingTable(t)}
+                      disabled={busyTable === t}
+                      className="bg-[#0d0303] hover:bg-[#1f0808] disabled:opacity-50 border border-[#1f0808] text-white font-medium py-3 rounded-lg transition-colors text-sm"
+                    >
+                      {busyTable === t ? "..." : t}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           ))}
         </div>
       </section>
@@ -185,7 +205,7 @@ export default function AdminPage() {
             onClick={(e) => e.stopPropagation()}
           >
             <p className="text-white font-medium mb-1">
-              테이블 {pendingTable}번 초기화
+              테이블 {pendingTable} 초기화
             </p>
             <p className="text-gray-400 text-sm mb-5">
               이 테이블의 주문 내역이 손님에게 보이지 않게 됩니다. 시트의 데이터는

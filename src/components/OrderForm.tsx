@@ -78,7 +78,7 @@ export default function OrderForm() {
       <div className="bg-[#0d0303] rounded-xl p-4 mb-6">
         <div className="flex justify-between pb-3 mb-2 border-b border-[#1f0808]">
           <span className="text-gray-400 text-sm">테이블</span>
-          <span className="text-white font-bold">{tableNumber}번</span>
+          <span className="text-white font-bold">{tableNumber}</span>
         </div>
         {items.map((item) => (
           <div
