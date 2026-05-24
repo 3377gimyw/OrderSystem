@@ -3,9 +3,9 @@ import { createPortal } from "react-dom";
 import { Link, useLocation, Navigate } from "react-router-dom";
 import { formatPrice } from "../utils/formatPrice";
 
-const BANK_NAME = "국민은행";
-const BANK_ACCOUNT_NUMBER = "000-0000-0000-00";
-const BANK_HOLDER = "홍길동";
+const BANK_NAME = "토스뱅크";
+const BANK_ACCOUNT_NUMBER = "1002-5786-3351";
+const BANK_HOLDER = "김성국";
 
 interface OrderedItem {
   name: string;
