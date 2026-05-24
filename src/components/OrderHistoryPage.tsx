@@ -212,19 +212,17 @@ export default function OrderHistoryPage() {
                 </div>
               ))}
             </div>
+            <button
+              onClick={() => setPaymentOrder(order)}
+              className="text-red-400 text-sm font-medium px-3 py-1.5 rounded-lg hover:bg-red-900/30 transition-colors w-full mb-2"
+            >
+              입금정보 다시보기
+            </button>
             <div className="flex items-center justify-between pt-2 border-t border-[#1f0808]">
               <span className="text-gray-400 text-xs">합계</span>
-              <div className="flex items-center gap-2">
-                <span className="text-white font-bold text-sm">
-                  {formatPrice(order.totalPrice)}
-                </span>
-                <button
-                  onClick={() => setPaymentOrder(order)}
-                  className="text-red-400 text-xs underline"
-                >
-                  입금정보 다시보기
-                </button>
-              </div>
+              <span className="text-white font-bold text-sm">
+                {formatPrice(order.totalPrice)}
+              </span>
             </div>
           </div>
         ))}
