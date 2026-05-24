@@ -14,6 +14,15 @@ var STAFF_SECRET = "CHANGE_ME";
 var ADMIN_SECRET = "garden2026@";
 var SOLD_OUT_KEY = "soldOut.items";
 
+var SECTION_LIMITS = { A: 4, B: 4, C: 6, D: 6, E: 6, F: 7, G: 7, H: 8 };
+
+function isValidTable(table) {
+  var match = String(table).match(/^([A-H])-(\d+)$/);
+  if (!match) return false;
+  var num = parseInt(match[2], 10);
+  return num >= 1 && num <= (SECTION_LIMITS[match[1]] || 0);
+}
+
 function resetKey(table) {
   return "reset." + table;
 }
@@ -94,8 +103,8 @@ function handleReset(data) {
     ).setMimeType(ContentService.MimeType.JSON);
   }
 
-  var table = parseInt(data.table, 10);
-  if (isNaN(table) || table < 1 || table > 48) {
+  var table = String(data.table || "").toUpperCase();
+  if (!isValidTable(table)) {
     return ContentService.createTextOutput(
       JSON.stringify({ result: "error", message: "invalid table" })
     ).setMimeType(ContentService.MimeType.JSON);
@@ -120,8 +129,8 @@ function handleAdminReset(data) {
     ).setMimeType(ContentService.MimeType.JSON);
   }
 
-  var table = parseInt(data.table, 10);
-  if (isNaN(table) || table < 1 || table > 48) {
+  var table = String(data.table || "").toUpperCase();
+  if (!isValidTable(table)) {
     return ContentService.createTextOutput(
       JSON.stringify({ result: "error", message: "invalid table" })
     ).setMimeType(ContentService.MimeType.JSON);
@@ -175,8 +184,8 @@ function doGet(e) {
     ).setMimeType(ContentService.MimeType.JSON);
   }
 
-  var table = parseInt(tableParam, 10);
-  if (isNaN(table) || table < 1 || table > 48) {
+  var table = String(tableParam).toUpperCase();
+  if (!isValidTable(table)) {
     return ContentService.createTextOutput(
       JSON.stringify({ result: "error", message: "invalid table" })
     ).setMimeType(ContentService.MimeType.JSON);
@@ -205,7 +214,7 @@ function doGet(e) {
       var sheetRowIndex = i + 2; // values[0] is sheet row 2
       if (sheetRowIndex <= resetRow) continue;
       var row = values[i];
-      if (Number(row[1]) !== table) continue;
+      if (String(row[1]).toUpperCase() !== table) continue;
 
       var items = [];
       for (var j = 0; j < MENU_NAMES.length; j++) {
