@@ -20,7 +20,7 @@ export default function CartItem({ item }: CartItemProps) {
       <div className="flex items-center gap-3">
         <button
           onClick={() => updateQuantity(item.menuItem.id, item.quantity - 1)}
-          className="bg-[#1f0808] hover:bg-[#2e0c0c] text-white w-8 h-8 rounded-lg flex items-center justify-center transition-colors"
+          className="bg-[#1f0808] hover:bg-[#2e0c0c] text-white w-11 h-11 rounded-lg flex items-center justify-center transition-colors"
         >
           -
         </button>
@@ -29,13 +29,13 @@ export default function CartItem({ item }: CartItemProps) {
         </span>
         <button
           onClick={() => updateQuantity(item.menuItem.id, item.quantity + 1)}
-          className="bg-red-900 hover:bg-red-800 text-white w-8 h-8 rounded-lg flex items-center justify-center transition-colors"
+          className="bg-red-900 hover:bg-red-800 text-white w-11 h-11 rounded-lg flex items-center justify-center transition-colors"
         >
           +
         </button>
         <button
           onClick={() => removeItem(item.menuItem.id)}
-          className="text-gray-500 hover:text-red-400 ml-2 transition-colors"
+          className="text-gray-500 hover:text-red-400 ml-2 transition-colors w-11 h-11 flex items-center justify-center"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

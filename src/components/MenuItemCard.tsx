@@ -57,7 +57,7 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
             <div className="flex items-center gap-3">
               <button
                 onClick={() => updateQuantity(item.id, quantity - 1)}
-                className="bg-[#1f0808] hover:bg-[#2e0c0c] text-white w-8 h-8 rounded-lg flex items-center justify-center transition-colors"
+                className="bg-[#1f0808] hover:bg-[#2e0c0c] text-white w-11 h-11 rounded-lg flex items-center justify-center transition-colors"
               >
                 -
               </button>
@@ -66,7 +66,7 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
               </span>
               <button
                 onClick={() => updateQuantity(item.id, quantity + 1)}
-                className="bg-red-900 hover:bg-red-800 text-white w-8 h-8 rounded-lg flex items-center justify-center transition-colors"
+                className="bg-red-900 hover:bg-red-800 text-white w-11 h-11 rounded-lg flex items-center justify-center transition-colors"
               >
                 +
               </button>
