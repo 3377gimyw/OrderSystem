@@ -7,7 +7,7 @@ interface MenuItemCardProps {
 }
 
 export default function MenuItemCard({ item }: MenuItemCardProps) {
-  const { items, addItem, updateQuantity, decrementItem } = useCart();
+  const { items, addItem, incrementItem, decrementItem } = useCart();
   const cartItem = items.find((ci) => ci.menuItem.id === item.id);
   const quantity = cartItem?.quantity ?? 0;
 
@@ -65,7 +65,7 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
                 {quantity}
               </span>
               <button
-                onClick={() => updateQuantity(item.id, quantity + 1)}
+                onClick={() => incrementItem(item.id)}
                 className="bg-red-900 hover:bg-red-800 text-white w-11 h-11 rounded-lg flex items-center justify-center transition-colors"
               >
                 +

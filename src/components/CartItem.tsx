@@ -7,7 +7,7 @@ interface CartItemProps {
 }
 
 export default function CartItem({ item }: CartItemProps) {
-  const { decrementItem, updateQuantity, removeItem } = useCart();
+  const { decrementItem, incrementItem, removeItem } = useCart();
 
   return (
     <div className="flex items-center justify-between py-4 border-b border-[#1f0808]">
@@ -28,7 +28,7 @@ export default function CartItem({ item }: CartItemProps) {
           {item.quantity}
         </span>
         <button
-          onClick={() => updateQuantity(item.menuItem.id, item.quantity + 1)}
+          onClick={() => incrementItem(item.menuItem.id)}
           className="bg-red-900 hover:bg-red-800 text-white w-11 h-11 rounded-lg flex items-center justify-center transition-colors"
         >
           +

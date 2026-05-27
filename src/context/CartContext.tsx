@@ -8,6 +8,7 @@ interface CartContextType {
   removeItem: (menuItemId: string) => void;
   updateQuantity: (menuItemId: string, quantity: number) => void;
   decrementItem: (menuItemId: string) => void;
+  incrementItem: (menuItemId: string) => void;
   clearCart: () => void;
   totalItems: number;
   totalPrice: number;
@@ -64,6 +65,16 @@ export function CartProvider({ children }: { children: ReactNode }) {
     );
   };
 
+  const incrementItem = (menuItemId: string) => {
+    setItems((prev) =>
+      prev.map((item) =>
+        item.menuItem.id === menuItemId
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      )
+    );
+  };
+
   const updateQuantity = (menuItemId: string, quantity: number) => {
     if (quantity <= 0) {
       removeItem(menuItemId);
@@ -95,6 +106,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         removeItem,
         updateQuantity,
         decrementItem,
+        incrementItem,
         clearCart,
         totalItems,
         totalPrice,
