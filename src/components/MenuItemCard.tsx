@@ -7,7 +7,7 @@ interface MenuItemCardProps {
 }
 
 export default function MenuItemCard({ item }: MenuItemCardProps) {
-  const { items, addItem, updateQuantity } = useCart();
+  const { items, addItem, updateQuantity, decrementItem } = useCart();
   const cartItem = items.find((ci) => ci.menuItem.id === item.id);
   const quantity = cartItem?.quantity ?? 0;
 
@@ -56,7 +56,7 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
           ) : (
             <div className="flex items-center gap-3">
               <button
-                onClick={() => updateQuantity(item.id, quantity - 1)}
+                onClick={() => decrementItem(item.id)}
                 className="bg-[#1f0808] hover:bg-[#2e0c0c] text-white w-11 h-11 rounded-lg flex items-center justify-center transition-colors"
               >
                 -

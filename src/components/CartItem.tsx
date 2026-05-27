@@ -7,7 +7,7 @@ interface CartItemProps {
 }
 
 export default function CartItem({ item }: CartItemProps) {
-  const { updateQuantity, removeItem } = useCart();
+  const { decrementItem, updateQuantity, removeItem } = useCart();
 
   return (
     <div className="flex items-center justify-between py-4 border-b border-[#1f0808]">
@@ -19,7 +19,7 @@ export default function CartItem({ item }: CartItemProps) {
       </div>
       <div className="flex items-center gap-3">
         <button
-          onClick={() => updateQuantity(item.menuItem.id, item.quantity - 1)}
+          onClick={() => decrementItem(item.menuItem.id)}
           className="bg-[#1f0808] hover:bg-[#2e0c0c] text-white w-11 h-11 rounded-lg flex items-center justify-center transition-colors"
         >
           -

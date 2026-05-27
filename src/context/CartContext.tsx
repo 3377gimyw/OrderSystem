@@ -7,6 +7,7 @@ interface CartContextType {
   addItem: (menuItem: MenuItem) => void;
   removeItem: (menuItemId: string) => void;
   updateQuantity: (menuItemId: string, quantity: number) => void;
+  decrementItem: (menuItemId: string) => void;
   clearCart: () => void;
   totalItems: number;
   totalPrice: number;
@@ -51,6 +52,18 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setItems((prev) => prev.filter((item) => item.menuItem.id !== menuItemId));
   };
 
+  // Uses a functional updater so rapid taps always read the latest quantity,
+  // preventing stale-closure double-taps from re-adding a just-deleted item.
+  const decrementItem = (menuItemId: string) => {
+    setItems((prev) =>
+      prev.flatMap((item) => {
+        if (item.menuItem.id !== menuItemId) return [item];
+        if (item.quantity <= 1) return [];
+        return [{ ...item, quantity: item.quantity - 1 }];
+      })
+    );
+  };
+
   const updateQuantity = (menuItemId: string, quantity: number) => {
     if (quantity <= 0) {
       removeItem(menuItemId);
@@ -81,6 +94,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         addItem,
         removeItem,
         updateQuantity,
+        decrementItem,
         clearCart,
         totalItems,
         totalPrice,
