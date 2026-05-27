@@ -5,6 +5,10 @@ import { useCart } from "../context/CartContext";
 import { submitOrder } from "../utils/submitOrder";
 import { formatPrice } from "../utils/formatPrice";
 
+const BANK_NAME = "토스뱅크";
+const BANK_ACCOUNT_NUMBER = "1002-5786-3351";
+const BANK_HOLDER = "김성국";
+
 export default function OrderForm() {
   const { items, totalPrice, clearCart, orderId, tableNumber } = useCart();
   const navigate = useNavigate();
@@ -12,6 +16,7 @@ export default function OrderForm() {
   const [loading, setLoading] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [showConfirm, setShowConfirm] = useState(false);
+  const [copied, setCopied] = useState(false);
   const submittedRef = useRef(false);
 
   if (items.length === 0 && !submittedRef.current) {
@@ -36,6 +41,17 @@ export default function OrderForm() {
       </div>
     );
   }
+
+  const handleCopy = async () => {
+    const text = `${BANK_NAME} ${BANK_ACCOUNT_NUMBER} ${BANK_HOLDER}\n입금액: ${formatPrice(totalPrice)}`;
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setCopied(false);
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -79,36 +95,36 @@ export default function OrderForm() {
   };
 
   return (
-    <div className="px-4 py-6">
+    <div className="px-4 py-6 max-w-md mx-auto">
       <h2 className="text-white text-xl font-bold mb-6">주문 확인</h2>
 
-      <div className="bg-[#0d0303] rounded-xl p-4 mb-6">
-        <div className="flex justify-between pb-3 mb-2 border-b border-[#1f0808]">
-          <span className="text-gray-400 text-sm">테이블</span>
-          <span className="text-white font-bold">{tableNumber}</span>
-        </div>
-        {items.map((item) => (
-          <div
-            key={item.menuItem.id}
-            className="flex justify-between py-2 text-sm"
+      {/* Bank account + price */}
+      <div className="bg-[#0d0303] border border-[#1f0808] rounded-xl p-4 mb-4">
+        <p className="text-gray-400 text-xs text-center mb-1">
+          {BANK_NAME} · {BANK_HOLDER}
+        </p>
+        <div className="flex items-center justify-center gap-2 mb-4">
+          <p className="text-red-400 font-bold text-base">
+            {BANK_ACCOUNT_NUMBER}
+          </p>
+          <button
+            type="button"
+            onClick={handleCopy}
+            className="bg-red-900 hover:bg-red-800 active:scale-95 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-all"
           >
-            <span className="text-gray-300">
-              {item.menuItem.name} x {item.quantity}
-            </span>
-            <span className="text-gray-300">
-              {formatPrice(item.menuItem.price * item.quantity)}
-            </span>
-          </div>
-        ))}
-        <div className="flex justify-between pt-3 mt-2 border-t border-[#1f0808]">
-          <span className="text-white font-bold">총 금액</span>
-          <span className="text-white font-bold">
+            {copied ? "복사됨" : "복사"}
+          </button>
+        </div>
+        <div className="flex justify-between items-center pt-3 border-t border-[#1f0808]">
+          <span className="text-gray-400 text-sm">입금 금액</span>
+          <span className="text-white font-bold text-lg">
             {formatPrice(totalPrice)}
           </span>
         </div>
       </div>
 
-      <form onSubmit={handleSubmit}>
+      {/* Depositor name input */}
+      <form onSubmit={handleSubmit} className="mb-4">
         <div className="mb-4">
           <label className="block text-gray-400 text-sm mb-1">입금자명</label>
           <input
@@ -133,24 +149,9 @@ export default function OrderForm() {
         >
           {loading ? (
             <span className="flex items-center justify-center gap-2">
-              <svg
-                className="animate-spin h-5 w-5"
-                viewBox="0 0 24 24"
-                fill="none"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                />
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                />
+              <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24" fill="none">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
               </svg>
               주문 중...
             </span>
@@ -161,6 +162,24 @@ export default function OrderForm() {
           )}
         </button>
       </form>
+
+      {/* Order summary (secondary) */}
+      <div className="bg-[#0d0303] border border-[#1f0808] rounded-xl p-4">
+        <div className="flex justify-between pb-2 mb-2 border-b border-[#1f0808]">
+          <span className="text-gray-400 text-xs">테이블</span>
+          <span className="text-white text-xs font-bold">{tableNumber}</span>
+        </div>
+        {items.map((item) => (
+          <div key={item.menuItem.id} className="flex justify-between py-1 text-xs">
+            <span className="text-gray-400">
+              {item.menuItem.name} × {item.quantity}
+            </span>
+            <span className="text-gray-400">
+              {formatPrice(item.menuItem.price * item.quantity)}
+            </span>
+          </div>
+        ))}
+      </div>
 
       {showConfirm && createPortal(
         <div

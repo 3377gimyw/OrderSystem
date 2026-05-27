@@ -16,7 +16,11 @@ var SOLD_OUT_KEY = "soldOut.items";
 
 var SECTION_LIMITS = { A: 4, B: 4, C: 6, D: 6, E: 6, F: 7, G: 7, H: 8 };
 
+// Alias destinations that fall outside normal section limits (mirrors TABLE_ALIAS in useTablePrefill.ts)
+var EXTRA_TABLES = ["A-5", "A-6", "B-0"];
+
 function isValidTable(table) {
+  if (EXTRA_TABLES.indexOf(table) !== -1) return true;
   var match = String(table).match(/^([A-H])-(\d+)$/);
   if (!match) return false;
   var num = parseInt(match[2], 10);
