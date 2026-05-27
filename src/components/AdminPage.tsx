@@ -6,9 +6,9 @@ import { adminResetTable } from "../utils/adminResetTable";
 const ADMIN_PASSWORD = "garden2026@";
 const SESSION_KEY = "bar.adminAuth";
 
-const SECTIONS: { label: string; count: number }[] = [
-  { label: "A", count: 4 },
-  { label: "B", count: 4 },
+const SECTIONS: { label: string; count: number; extras?: string[] }[] = [
+  { label: "A", count: 4, extras: ["A-5", "A-6"] },
+  { label: "B", count: 4, extras: ["B-0"] },
   { label: "C", count: 6 },
   { label: "D", count: 6 },
   { label: "E", count: 6 },
@@ -185,15 +185,18 @@ export default function AdminPage() {
           )}
 
           <div className="mt-4 space-y-2">
-            {SECTIONS.map(({ label, count }) => (
-              <div key={label} className="flex items-center gap-4">
-                <span className="text-gray-400 font-bold text-sm w-5 shrink-0 text-center">
-                  {label}
-                </span>
-                <div className="flex gap-2 flex-wrap">
-                  {Array.from({ length: count }, (_, i) => {
-                    const t = `${label}-${i + 1}`;
-                    return (
+            {SECTIONS.map(({ label, count, extras }) => {
+              const tables = [
+                ...Array.from({ length: count }, (_, i) => `${label}-${i + 1}`),
+                ...(extras ?? []),
+              ];
+              return (
+                <div key={label} className="flex items-center gap-4">
+                  <span className="text-gray-400 font-bold text-sm w-5 shrink-0 text-center">
+                    {label}
+                  </span>
+                  <div className="flex gap-2 flex-wrap">
+                    {tables.map((t) => (
                       <button
                         key={t}
                         onClick={() => setPendingTable(t)}
@@ -202,11 +205,11 @@ export default function AdminPage() {
                       >
                         {busyTable === t ? "..." : t}
                       </button>
-                    );
-                  })}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>

@@ -6,7 +6,6 @@ interface CartContextType {
   items: CartItem[];
   addItem: (menuItem: MenuItem) => void;
   removeItem: (menuItemId: string) => void;
-  updateQuantity: (menuItemId: string, quantity: number) => void;
   decrementItem: (menuItemId: string) => void;
   incrementItem: (menuItemId: string) => void;
   clearCart: () => void;
@@ -75,18 +74,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
     );
   };
 
-  const updateQuantity = (menuItemId: string, quantity: number) => {
-    if (quantity <= 0) {
-      removeItem(menuItemId);
-      return;
-    }
-    setItems((prev) =>
-      prev.map((item) =>
-        item.menuItem.id === menuItemId ? { ...item, quantity } : item
-      )
-    );
-  };
-
   const clearCart = () => {
     setItems([]);
     setOrderId(newOrderId());
@@ -104,7 +91,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
         items,
         addItem,
         removeItem,
-        updateQuantity,
         decrementItem,
         incrementItem,
         clearCart,
