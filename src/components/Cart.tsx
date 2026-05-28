@@ -47,7 +47,7 @@ export default function Cart() {
           disabled={tableNumber == null}
           className="w-full bg-red-900 hover:bg-red-800 disabled:bg-[#0d0303] disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-xl transition-colors"
         >
-          주문하기
+          주문하러가기
         </button>
       </div>
     </div>
