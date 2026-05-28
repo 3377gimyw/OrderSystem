@@ -147,7 +147,7 @@ export default function OrderForm() {
         <button
           type="submit"
           disabled={loading || !depositorName.trim()}
-          className="w-full bg-red-500 hover:bg-red-400 active:scale-[0.98] disabled:bg-[#1a0808] disabled:text-gray-600 disabled:cursor-not-allowed text-white font-bold text-lg py-4 px-6 rounded-xl transition-all shadow-[0_0_20px_rgba(239,68,68,0.5)]"
+          className="w-full bg-red-500 hover:bg-red-400 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold text-lg py-4 px-6 rounded-xl transition-all shadow-[0_0_20px_rgba(239,68,68,0.5)]"
         >
           {loading ? (
             <span className="flex items-center justify-center gap-2">
