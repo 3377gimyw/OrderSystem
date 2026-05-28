@@ -4,14 +4,14 @@ import { resetTableHistory } from "../utils/resetTableHistory";
 const SECRET_KEY = "bar.staffSecret";
 
 const SECTIONS: { label: string; count: number }[] = [
-  { label: "A", count: 4 },
-  { label: "B", count: 4 },
-  { label: "C", count: 6 },
-  { label: "D", count: 6 },
-  { label: "E", count: 6 },
-  { label: "F", count: 7 },
-  { label: "G", count: 7 },
-  { label: "H", count: 8 },
+  { label: "1", count: 4 },
+  { label: "2", count: 4 },
+  { label: "3", count: 6 },
+  { label: "4", count: 6 },
+  { label: "5", count: 6 },
+  { label: "6", count: 7 },
+  { label: "7", count: 7 },
+  { label: "8", count: 8 },
 ];
 
 export default function StaffPage() {

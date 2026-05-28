@@ -6,7 +6,14 @@ const SECTION_LIMITS: Record<string, number> = {
   A: 4, B: 4, C: 6, D: 6, E: 6, F: 7, G: 7, H: 8,
 };
 
-// Maps URL QR code values to the actual table numbers shown everywhere else.
+// URL (QR code) section letter → display/storage section number.
+// A=1, B=2, ..., H=8. URL form stays alphabet; everything else is numeric.
+const SECTION_TO_NUMBER: Record<string, string> = {
+  A: "1", B: "2", C: "3", D: "4", E: "5", F: "6", G: "7", H: "8",
+};
+
+// Maps URL QR code values (alphabet form) to the canonical alphabet table value.
+// The result is then converted to numeric form before storage.
 const TABLE_ALIAS: Record<string, string> = {
   "C-6": "A-6",
   "D-6": "A-5",
@@ -21,6 +28,12 @@ function isValidTable(value: string): boolean {
   return num >= 1 && num <= (SECTION_LIMITS[section] ?? 0);
 }
 
+function toNumericTable(alphaTable: string): string {
+  const match = alphaTable.toUpperCase().match(/^([A-H])-(\d+)$/);
+  if (!match) return alphaTable;
+  return `${SECTION_TO_NUMBER[match[1]]}-${match[2]}`;
+}
+
 export function useTablePrefill() {
   const [params] = useSearchParams();
   const { setTableNumber } = useCart();
@@ -30,11 +43,11 @@ export function useTablePrefill() {
     if (!raw) return;
     const normalized = raw.toUpperCase();
     if (normalized in TABLE_ALIAS) {
-      setTableNumber(TABLE_ALIAS[normalized]);
+      setTableNumber(toNumericTable(TABLE_ALIAS[normalized]));
       return;
     }
     if (!isValidTable(normalized)) return;
-    setTableNumber(normalized);
+    setTableNumber(toNumericTable(normalized));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 }
