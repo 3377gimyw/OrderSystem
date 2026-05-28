@@ -125,14 +125,16 @@ export default function OrderForm() {
 
       {/* Depositor name input */}
       <form onSubmit={handleSubmit} className="mb-4">
-        <div className="mb-4">
-          <label className="block text-gray-400 text-sm mb-1">입금자명</label>
+        <div className="mb-5">
+          <label className="block text-white font-semibold text-base mb-2">
+            입금자명 <span className="text-red-500">*</span>
+          </label>
           <input
             type="text"
             value={depositorName}
             onChange={(e) => setDepositorName(e.target.value)}
             placeholder="입금자 이름을 입력하세요"
-            className="w-full bg-[#0d0303] border border-[#1f0808] text-white rounded-xl px-4 py-3 text-base focus:outline-none focus:border-red-700 transition-colors"
+            className="w-full bg-[#0d0303] border-2 border-[#3a0f0f] text-white rounded-xl px-4 py-3 text-base focus:outline-none focus:border-red-500 transition-colors placeholder:text-gray-600"
           />
         </div>
 
@@ -145,7 +147,7 @@ export default function OrderForm() {
         <button
           type="submit"
           disabled={loading || !depositorName.trim()}
-          className="w-full bg-red-900 hover:bg-red-800 disabled:bg-[#0d0303] disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-xl transition-colors"
+          className="w-full bg-red-600 hover:bg-red-500 active:scale-[0.98] disabled:bg-[#1a0808] disabled:text-gray-600 disabled:cursor-not-allowed text-white font-bold text-lg py-4 px-6 rounded-xl transition-all shadow-lg shadow-red-900/50"
         >
           {loading ? (
             <span className="flex items-center justify-center gap-2">
@@ -158,7 +160,7 @@ export default function OrderForm() {
           ) : submitError ? (
             "다시 시도"
           ) : (
-            "주문 전송"
+            "주문 전송하기"
           )}
         </button>
       </form>
