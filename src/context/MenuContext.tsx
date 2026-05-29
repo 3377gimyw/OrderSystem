@@ -15,6 +15,10 @@ export function MenuProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     fetchSoldOut().then((ids) => setSoldOutIds(new Set(ids)));
+    const interval = setInterval(() => {
+      fetchSoldOut().then((ids) => setSoldOutIds(new Set(ids)));
+    }, 30000);
+    return () => clearInterval(interval);
   }, []);
 
   const toggleSoldOut = async (id: string) => {
