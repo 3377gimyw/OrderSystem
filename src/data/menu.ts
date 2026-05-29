@@ -10,7 +10,7 @@ export const menuItems: MenuItem[] = [
   {
     id: "food-2",
     name: "파전",
-    price: 8000,
+    price: 9000,
     category: "음식",
   },
   {
@@ -22,7 +22,7 @@ export const menuItems: MenuItem[] = [
   {
     id: "food-4",
     name: "옥수수전",
-    price: 7000,
+    price: 8000,
     category: "음식",
   },
   {
