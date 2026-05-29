@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import { useMenu } from "../context/MenuContext";
 import { submitOrder } from "../utils/submitOrder";
 import { formatPrice } from "../utils/formatPrice";
 
@@ -11,6 +12,7 @@ const BANK_HOLDER = "김성국";
 
 export default function OrderForm() {
   const { items, totalPrice, clearCart, orderId, tableNumber } = useCart();
+  const { soldOutIds } = useMenu();
   const navigate = useNavigate();
   const [depositorName, setDepositorName] = useState("");
   const [loading, setLoading] = useState(false);
@@ -61,22 +63,33 @@ export default function OrderForm() {
 
   const handleConfirm = async () => {
     setShowConfirm(false);
+
+    const orderable = items.filter((item) => !soldOutIds.has(item.menuItem.id));
+    if (orderable.length === 0) {
+      setSubmitError("품절된 메뉴만 담겨 있어 주문할 수 없습니다. 메뉴를 다시 선택해주세요.");
+      return;
+    }
+    const orderableTotal = orderable.reduce(
+      (sum, item) => sum + item.menuItem.price * item.quantity,
+      0
+    );
+
     setLoading(true);
     try {
       await submitOrder({
         orderId,
         tableNumber,
         depositorName,
-        items: items.map((item) => ({
+        items: orderable.map((item) => ({
           name: item.menuItem.name,
           quantity: item.quantity,
           price: item.menuItem.price,
         })),
-        totalPrice,
+        totalPrice: orderableTotal,
         timestamp: new Date().toISOString(),
       });
 
-      const orderedItems = items.map((item) => ({
+      const orderedItems = orderable.map((item) => ({
         name: item.menuItem.name,
         quantity: item.quantity,
         price: item.menuItem.price,
@@ -84,7 +97,7 @@ export default function OrderForm() {
       submittedRef.current = true;
       navigate("/confirmation", {
         replace: true,
-        state: { tableNumber, totalPrice, items: orderedItems, depositorName },
+        state: { tableNumber, totalPrice: orderableTotal, items: orderedItems, depositorName },
       });
       clearCart();
     } catch {
